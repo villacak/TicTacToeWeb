@@ -13,6 +13,7 @@
 		33B14F1F1C6AD97B009C69B7 /* TicTacToeWeb.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 33B14F1D1C6AD97B009C69B7 /* TicTacToeWeb.xcdatamodeld */; };
 		33B14F211C6AD97B009C69B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 33B14F201C6AD97B009C69B7 /* Assets.xcassets */; };
 		33B14F241C6AD97B009C69B7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 33B14F221C6AD97B009C69B7 /* LaunchScreen.storyboard */; };
+		33B14F2D1C6ADA49009C69B7 /* Tic_Tac_Toe.png in Resources */ = {isa = PBXBuildFile; fileRef = 33B14F2C1C6ADA49009C69B7 /* Tic_Tac_Toe.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		33B14F201C6AD97B009C69B7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		33B14F231C6AD97B009C69B7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		33B14F251C6AD97B009C69B7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		33B14F2C1C6ADA49009C69B7 /* Tic_Tac_Toe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Tic_Tac_Toe.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		33B14F151C6AD97B009C69B7 /* TicTacToeWeb */ = {
 			isa = PBXGroup;
 			children = (
+				33B14F2B1C6ADA22009C69B7 /* resources */,
 				33B14F161C6AD97B009C69B7 /* AppDelegate.swift */,
 				33B14F181C6AD97B009C69B7 /* ViewController.swift */,
 				33B14F1A1C6AD97B009C69B7 /* Main.storyboard */,
@@ -65,6 +68,14 @@
 				33B14F1D1C6AD97B009C69B7 /* TicTacToeWeb.xcdatamodeld */,
 			);
 			path = TicTacToeWeb;
+			sourceTree = "<group>";
+		};
+		33B14F2B1C6ADA22009C69B7 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				33B14F2C1C6ADA49009C69B7 /* Tic_Tac_Toe.png */,
+			);
+			name = resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -125,6 +136,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				33B14F2D1C6ADA49009C69B7 /* Tic_Tac_Toe.png in Resources */,
 				33B14F241C6AD97B009C69B7 /* LaunchScreen.storyboard in Resources */,
 				33B14F211C6AD97B009C69B7 /* Assets.xcassets in Resources */,
 				33B14F1C1C6AD97B009C69B7 /* Main.storyboard in Resources */,
