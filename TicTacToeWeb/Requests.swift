@@ -12,9 +12,9 @@ import UIKit
 class Requests: NSObject {
 
     //
-    // Requests
+    // Generic Request
     //
-    func request(urlToCall urlToCall: String, method: String, controller: UIViewController, completionHandler:(result: NSDictionary!, error: String?) -> Void) -> NSURLSessionDataTask  {
+    func requestWithName(urlToCall urlToCall: String, method: String, controller: UIViewController, completionHandler:(result: NSDictionary!, error: String?) -> Void) -> NSURLSessionDataTask  {
         let url: NSURL = NSURL(string: urlToCall)!
         let request: NSMutableURLRequest = NSMutableURLRequest(URL: url)
         request.HTTPMethod = method
@@ -37,5 +37,4 @@ class Requests: NSObject {
         task.resume()
         return task
     }
-
 }

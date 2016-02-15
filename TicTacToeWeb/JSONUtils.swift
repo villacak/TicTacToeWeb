@@ -20,7 +20,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {
@@ -55,7 +55,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {
@@ -78,6 +78,76 @@ class JSONUtils: NSObject {
             }
         })
     }
+   
     
+    //
+    // Call games services Play and Check and return the JSON parsed
+    //
+    func callRequestForPlayOrCheckGameService(game game: String, selection: String, position: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
+        
+        let urlHelper: UrlHelper = UrlHelper()
+        let urlUserCreate: String = urlHelper.populateGamePlayOrCheck(game: game, selection: selection, position: position, service: service)
+        let request: Requests = Requests()
+        
+        var responseAsNSDictinory: Dictionary<String, AnyObject>!
+        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+            if (result != nil) {
+                responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
+                if let errorMessage = errorString  {
+                    completionHandler(result: nil, errorString: errorMessage)
+                } else {
+                    var game: Game = Game()
+                    game.user = responseAsNSDictinory[Constants.USER] as? User
+                    game.plays = responseAsNSDictinory[Constants.PLAYS] as? [Play]
+                    game.idgames = responseAsNSDictinory[Constants.ID_GAMES] as? Int
+                    game.game = responseAsNSDictinory[Constants.GAME] as? Int
+                    game.playerXOrO = responseAsNSDictinory[Constants.PLAYER_X_OR_O] as? String
+                    game.wonXOrY = responseAsNSDictinory[Constants.WON_X_OR_Y] as? String
+                    game.playersNumber = responseAsNSDictinory[Constants.PLAYERS_NUMBER] as? Int
+                    
+                    completionHandler(result: game, errorString: nil)
+                }
+            } else {
+                // If success returns nil then it's necessary display an alert to the user
+                completionHandler(result: nil, errorString: errorString)
+            }
+        })
+    }
+
+    
+    //
+    // Call games service Finalize and return the JSON parsed
+    //
+    func callRequestForFinalizeGameService(game game: String, selection: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
+        
+        let urlHelper: UrlHelper = UrlHelper()
+        let urlUserCreate: String = urlHelper.populateGameFinalize(game: game, selection: selection)
+        let request: Requests = Requests()
+        
+        var responseAsNSDictinory: Dictionary<String, AnyObject>!
+        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+            if (result != nil) {
+                responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
+                if let errorMessage = errorString  {
+                    completionHandler(result: nil, errorString: errorMessage)
+                } else {
+                    var game: Game = Game()
+                    game.user = responseAsNSDictinory[Constants.USER] as? User
+                    game.plays = responseAsNSDictinory[Constants.PLAYS] as? [Play]
+                    game.idgames = responseAsNSDictinory[Constants.ID_GAMES] as? Int
+                    game.game = responseAsNSDictinory[Constants.GAME] as? Int
+                    game.playerXOrO = responseAsNSDictinory[Constants.PLAYER_X_OR_O] as? String
+                    game.wonXOrY = responseAsNSDictinory[Constants.WON_X_OR_Y] as? String
+                    game.playersNumber = responseAsNSDictinory[Constants.PLAYERS_NUMBER] as? Int
+                    
+                    completionHandler(result: game, errorString: nil)
+                }
+            } else {
+                // If success returns nil then it's necessary display an alert to the user
+                completionHandler(result: nil, errorString: errorString)
+            }
+        })
+    }
+
     
 }
