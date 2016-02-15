@@ -26,15 +26,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    var user: User = User()
-                    user.iduser = responseAsNSDictinory[Constants.ID_USER] as? Int
-                    user.userName = responseAsNSDictinory[Constants.USER_NAME] as? String
-                    user.statsWins = responseAsNSDictinory[Constants.STATS_WINS] as? Int
-                    user.statsLoses = responseAsNSDictinory[Constants.STATS_LOSES] as? Int
-                    user.statsTied = responseAsNSDictinory[Constants.STATS_TIED] as? Int
-                    user.lastDatePlayed = responseAsNSDictinory[Constants.LAST_DATE_PLAYED] as? String
-                    user.games = responseAsNSDictinory[Constants.GAMES] as? [Game]
-                    
+                    let user: User = self.parseDictionaryToUser(responseAsNSDictinory)
                     completionHandler(result: user, errorString: nil)
                 }
             } else {
