@@ -61,15 +61,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    var game: Game = Game()
-                    game.user = responseAsNSDictinory[Constants.USER] as? User
-                    game.plays = responseAsNSDictinory[Constants.PLAYS] as? [Play]
-                    game.idgames = responseAsNSDictinory[Constants.ID_GAMES] as? Int
-                    game.game = responseAsNSDictinory[Constants.GAME] as? Int
-                    game.playerXOrO = responseAsNSDictinory[Constants.PLAYER_X_OR_O] as? String
-                    game.wonXOrY = responseAsNSDictinory[Constants.WON_X_OR_Y] as? String
-                    game.playersNumber = responseAsNSDictinory[Constants.PLAYERS_NUMBER] as? Int
-                    
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -96,15 +88,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    var game: Game = Game()
-                    game.user = responseAsNSDictinory[Constants.USER] as? User
-                    game.plays = responseAsNSDictinory[Constants.PLAYS] as? [Play]
-                    game.idgames = responseAsNSDictinory[Constants.ID_GAMES] as? Int
-                    game.game = responseAsNSDictinory[Constants.GAME] as? Int
-                    game.playerXOrO = responseAsNSDictinory[Constants.PLAYER_X_OR_O] as? String
-                    game.wonXOrY = responseAsNSDictinory[Constants.WON_X_OR_Y] as? String
-                    game.playersNumber = responseAsNSDictinory[Constants.PLAYERS_NUMBER] as? Int
-                    
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -131,15 +115,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    var game: Game = Game()
-                    game.user = responseAsNSDictinory[Constants.USER] as? User
-                    game.plays = responseAsNSDictinory[Constants.PLAYS] as? [Play]
-                    game.idgames = responseAsNSDictinory[Constants.ID_GAMES] as? Int
-                    game.game = responseAsNSDictinory[Constants.GAME] as? Int
-                    game.playerXOrO = responseAsNSDictinory[Constants.PLAYER_X_OR_O] as? String
-                    game.wonXOrY = responseAsNSDictinory[Constants.WON_X_OR_Y] as? String
-                    game.playersNumber = responseAsNSDictinory[Constants.PLAYERS_NUMBER] as? Int
-                    
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -150,4 +126,46 @@ class JSONUtils: NSObject {
     }
 
     
+    //
+    // Parse from Dictionary to User
+    //
+    func parseDictionaryToUser(dictionaryResponse: Dictionary<String, AnyObject>) -> User {
+        var user: User = User()
+        user.iduser = dictionaryResponse[Constants.ID_USER] as? Int
+        user.userName = dictionaryResponse[Constants.USER_NAME] as? String
+        user.statsWins = dictionaryResponse[Constants.STATS_WINS] as? Int
+        user.statsLoses = dictionaryResponse[Constants.STATS_LOSES] as? Int
+        user.statsTied = dictionaryResponse[Constants.STATS_TIED] as? Int
+        user.lastDatePlayed = dictionaryResponse[Constants.LAST_DATE_PLAYED] as? String
+        user.games = dictionaryResponse[Constants.GAMES] as? [Game]
+        return user
+    }
+    
+    
+    //
+    // Parse from Dictinary to Game
+    //
+    func parseDictionaryToGame(dictionaryResponse: Dictionary<String, AnyObject>) -> Game {
+        var game: Game = Game()
+        game.user = dictionaryResponse[Constants.USER] as? User
+        game.plays = dictionaryResponse[Constants.PLAYS] as? [Play]
+        game.idgames = dictionaryResponse[Constants.ID_GAMES] as? Int
+        game.game = dictionaryResponse[Constants.GAME] as? Int
+        game.playerXOrO = dictionaryResponse[Constants.PLAYER_X_OR_O] as? String
+        game.wonXOrY = dictionaryResponse[Constants.WON_X_OR_Y] as? String
+        game.playersNumber = dictionaryResponse[Constants.PLAYERS_NUMBER] as? Int
+        return game
+    }
+    
+    
+    //
+    // Parse from Dictionary to Play
+    //
+    func parseDictionaryToPlay(dictionaryResponse: Dictionary<String, AnyObject>) -> Play {
+        var play: Play = Play()
+        play.playid = dictionaryResponse[Constants.PLAY_ID] as? Int
+        play.game = dictionaryResponse[Constants.GAME] as? Game
+        play.position = dictionaryResponse[Constants.POSITON] as? Int
+        return play
+    }
 }
