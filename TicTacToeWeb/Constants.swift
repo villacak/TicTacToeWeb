@@ -38,12 +38,35 @@ class Constants: NSObject {
 
     
     // REST Call Methods
-    static let GET_METHOD = "GET"
-    static let POST_METHOD = "POST"
-    static let PUT_METHOD = "PUT"
-    static let DELETE_METHOD = "DELETE"
+    static let GET_METHOD: String = "GET"
+    static let POST_METHOD: String = "POST"
+    static let PUT_METHOD: String = "PUT"
+    static let DELETE_METHOD: String = "DELETE"
     
     
     // Empty String
     static let EMPTY_STRING: String = ""
+    
+    // User
+    static let ID_USER: String =  "iduser"
+    static let USER_NAME: String = "userName"
+    static let STATS_WINS: String = "statsWins"
+    static let STATS_LOSES: String = "statsLoses"
+    static let STATS_TIED: String = "statsTied"
+    static let LAST_DATE_PLAYED: String = "lastDatePlayed"
+    static let GAMES: String = "games"
+    
+    // Game
+    static let USER: String = "user"
+    static let PLAYS: String = "plays"
+    static let ID_GAMES: String = "idgames"
+    static let GAME: String = "game"
+    static let PLAYER_X_OR_O: String = "playerXOrO"
+    static let WON_X_OR_Y: String = "wonXOrY"
+    static let PLAYERS_NUMBER: String = "playersNumber"
+    
+    // Play
+    static let PLAY_ID: String = "playid"
+    static let POSITON: String = "position"
+
 }
