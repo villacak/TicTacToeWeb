@@ -12,11 +12,13 @@ import Foundation
 class Constants: NSObject {
 
     // Base URL
-    static let URL_BASE: String = "http://ec2-52-26-42-218.us-west-2.compute.amazonaws.com:8080"
-
+//    static let URL_BASE: String = "http://ec2-52-26-42-218.us-west-2.compute.amazonaws.com:8080"
+    static let URL_BASE: String = "http://localhost:8080/server/rest"
+    
+    
     // Endpoints
     // Game Services
-    static let GAME_CREATE: String = "/game/v1/create/"
+    static let GAME_CREATE: String = "/game/v1/create"
     static let GAME_PLAY: String = "/game/v1/play?"
     static let GAME_CHECK: String = "/game/v1/check?"
     static let GAME_FINALIZE: String = "/game/v1/finalize?"

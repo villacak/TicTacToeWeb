@@ -129,7 +129,7 @@ class JSONUtils: NSObject {
         user.statsLoses = dictionaryResponse[Constants.STATS_LOSES] as? Int
         user.statsTied = dictionaryResponse[Constants.STATS_TIED] as? Int
         user.lastDatePlayed = dictionaryResponse[Constants.LAST_DATE_PLAYED] as? String
-        user.games = dictionaryResponse[Constants.GAMES] as? [Game]
+//        user.games = parseDictionaryToGame(dictionaryResponse[Constants.GAMES] as Dictionary<String, AnyObject>) as? [Game]
         return user
     }
     

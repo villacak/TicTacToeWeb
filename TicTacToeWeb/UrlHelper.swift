@@ -28,13 +28,13 @@ class UrlHelper: NSObject {
     func populateServicesWithUserName(userName userName: String!, service: String!) -> String {
         var urlToReturn: String!
         if service == Constants.USER_CREATE {
-            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_CREATE)/\(userName)"
+            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_CREATE)\(userName)"
         } else if service == Constants.USER_RETRIEVE {
-            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_RETRIEVE)/\(userName)"
+            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_RETRIEVE)\(userName)"
         } else if service == Constants.USER_DELETE_SERVICE {
-            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_DELETE)/\(userName)"
+            urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_DELETE)\(userName)"
         } else if service == Constants.GAME_CREATE_SERVICE {
-            urlToReturn = "\(Constants.URL_BASE)\(Constants.GAME_CREATE)/\(userName)"
+            urlToReturn = "\(Constants.URL_BASE)\(Constants.GAME_CREATE)\(userName)"
         }
         return urlToReturn
     }
