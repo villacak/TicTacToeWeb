@@ -129,7 +129,21 @@ class JSONUtils: NSObject {
         user.statsLoses = dictionaryResponse[Constants.STATS_LOSES] as? Int
         user.statsTied = dictionaryResponse[Constants.STATS_TIED] as? Int
         user.lastDatePlayed = dictionaryResponse[Constants.LAST_DATE_PLAYED] as? String
-//        user.games = parseDictionaryToGame(dictionaryResponse[Constants.GAMES] as Dictionary<String, AnyObject>) as? [Game]
+        
+        if let tempGameDictionary: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAMES] as? Dictionary<String, AnyObject> {
+            let gamesCounter: Int = tempGameDictionary.count
+            if gamesCounter > 0 {
+                var games: [Game] = [Game]()
+                for (key, value) in tempGameDictionary {
+                    let singleItemDictionary: Dictionary<String, AnyObject> = [key : value]
+                    let game: Game = parseDictionaryToGame(singleItemDictionary)
+                    if let tempGame: Game = game {
+                        games.append(tempGame)
+                    }
+                }
+                user.games = games
+            }
+        }
         return user
     }
     
