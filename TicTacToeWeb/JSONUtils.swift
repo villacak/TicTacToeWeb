@@ -26,7 +26,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    let user: User = self.parseDictionaryToUser(responseAsNSDictinory)
+                    let user: User = self.parseDictionaryToUser(responseAsNSDictinory, loadRelationship: true)
                     completionHandler(result: user, errorString: nil)
                 }
             } else {
@@ -53,7 +53,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory, loadRelationship: true)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -80,7 +80,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory, loadRelationship: true)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -107,7 +107,7 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory)
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory, loadRelationship: true)
                     completionHandler(result: game, errorString: nil)
                 }
             } else {
@@ -121,7 +121,7 @@ class JSONUtils: NSObject {
     //
     // Parse from Dictionary to User
     //
-    func parseDictionaryToUser(dictionaryResponse: Dictionary<String, AnyObject>) -> User {
+    func parseDictionaryToUser(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> User {
         var user: User = User()
         user.iduser = dictionaryResponse[Constants.ID_USER] as? Int
         user.userName = dictionaryResponse[Constants.USER_NAME] as? String
@@ -130,19 +130,23 @@ class JSONUtils: NSObject {
         user.statsTied = dictionaryResponse[Constants.STATS_TIED] as? Int
         user.lastDatePlayed = dictionaryResponse[Constants.LAST_DATE_PLAYED] as? String
         
-        if let tempGameDictionary: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAMES] as? Dictionary<String, AnyObject> {
-            let gamesCounter: Int = tempGameDictionary.count
-            if gamesCounter > 0 {
-                var games: [Game] = [Game]()
-                for (key, value) in tempGameDictionary {
-                    let singleItemDictionary: Dictionary<String, AnyObject> = [key : value]
-                    let game: Game = parseDictionaryToGame(singleItemDictionary)
-                    if let tempGame: Game = game {
-                        games.append(tempGame)
+        if (loadRelationship) {
+            if let tempGameDictionary: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAMES] as? Dictionary<String, AnyObject> {
+                let gamesCounter: Int = tempGameDictionary.count
+                if gamesCounter > 0 {
+                    var games: [Game] = [Game]()
+                    for (key, value) in tempGameDictionary {
+                        let singleItemDictionary: Dictionary<String, AnyObject> = [key : value]
+                        let game: Game = parseDictionaryToGame(singleItemDictionary, loadRelationship: false)
+                        if let tempGame: Game = game {
+                            games.append(tempGame)
+                        }
                     }
+                    user.games = games
                 }
-                user.games = games
             }
+        } else {
+            user.games = nil
         }
         return user
     }
@@ -151,9 +155,16 @@ class JSONUtils: NSObject {
     //
     // Parse from Dictinary to Game
     //
-    func parseDictionaryToGame(dictionaryResponse: Dictionary<String, AnyObject>) -> Game {
+    func parseDictionaryToGame(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> Game {
         var game: Game = Game()
-        game.user = dictionaryResponse[Constants.USER] as? User
+        if (loadRelationship) {
+            if let tempUser: Dictionary<String, AnyObject> = dictionaryResponse[Constants.USER] as? Dictionary<String, AnyObject> {
+                game.user = parseDictionaryToUser(tempUser, loadRelationship: false)
+            }
+        } else {
+            game.user = nil
+        }
+        
         game.plays = dictionaryResponse[Constants.PLAYS] as? [Play]
         game.idgames = dictionaryResponse[Constants.ID_GAMES] as? Int
         game.game = dictionaryResponse[Constants.GAME] as? Int
@@ -167,10 +178,16 @@ class JSONUtils: NSObject {
     //
     // Parse from Dictionary to Play
     //
-    func parseDictionaryToPlay(dictionaryResponse: Dictionary<String, AnyObject>) -> Play {
+    func parseDictionaryToPlay(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> Play {
         var play: Play = Play()
         play.playid = dictionaryResponse[Constants.PLAY_ID] as? Int
-        play.game = dictionaryResponse[Constants.GAME] as? Game
+        if (loadRelationship) {
+            if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAME] as? Dictionary<String, AnyObject> {
+                play.game = parseDictionaryToGame(tempGame, loadRelationship: false)
+            }
+        } else {
+            play.game = nil
+        }
         play.position = dictionaryResponse[Constants.POSITON] as? Int
         return play
     }
