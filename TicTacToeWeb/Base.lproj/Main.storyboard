@@ -102,7 +102,18 @@
                     <view key="view" contentMode="scaleToFill" id="Idn-gG-gqj">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tic_Tac_Toe_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dcr-xh-Moc">
+                                <rect key="frame" x="43" y="107" width="515" height="459"/>
+                            </imageView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dcr-xh-Moc" firstAttribute="top" secondItem="LMz-Yo-R2h" secondAttribute="bottom" constant="43" id="6PF-Al-nTY"/>
+                            <constraint firstItem="MFT-Bk-wWf" firstAttribute="top" secondItem="Dcr-xh-Moc" secondAttribute="bottom" constant="34" id="aml-Iq-lyC"/>
+                            <constraint firstItem="Dcr-xh-Moc" firstAttribute="centerX" secondItem="Idn-gG-gqj" secondAttribute="centerX" id="dLI-7g-llI"/>
+                            <constraint firstItem="Dcr-xh-Moc" firstAttribute="leading" secondItem="Idn-gG-gqj" secondAttribute="leadingMargin" constant="23" id="gev-Rp-hRB"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WYT-dA-hfQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -269,7 +280,58 @@
                     <view key="view" contentMode="scaleToFill" id="2Di-da-tSU">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yZd-Nk-cIj">
+                                <rect key="frame" x="20" y="152" width="555" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTp-XL-nrV">
+                                <rect key="frame" x="20" y="123" width="61" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="61D-KB-RvX"/>
+                                    <constraint firstAttribute="width" constant="61" id="l7X-uS-MMF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OAP-w5-M5K">
+                                <rect key="frame" x="20" y="190" width="555" height="30"/>
+                                <color key="backgroundColor" red="0.94036063762626265" green="0.94036063762626265" blue="0.94036063762626265" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Create New User"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7ur-jI-vib">
+                                <rect key="frame" x="20" y="228" width="555" height="30"/>
+                                <color key="backgroundColor" red="0.94036063759999999" green="0.94036063759999999" blue="0.94036063759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Reset User"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jPZ-ac-YJr">
+                                <rect key="frame" x="20" y="266" width="555" height="30"/>
+                                <color key="backgroundColor" red="0.94036063762626265" green="0.94036063762626265" blue="0.94036063762626265" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Reset Scores"/>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="yZd-Nk-cIj" firstAttribute="leading" secondItem="RTp-XL-nrV" secondAttribute="leading" id="2YM-gd-D5b"/>
+                            <constraint firstItem="7ur-jI-vib" firstAttribute="leading" secondItem="OAP-w5-M5K" secondAttribute="leading" id="5XN-zZ-Iim"/>
+                            <constraint firstItem="7ur-jI-vib" firstAttribute="top" secondItem="OAP-w5-M5K" secondAttribute="bottom" constant="8" symbolic="YES" id="Meq-Ko-Vln"/>
+                            <constraint firstItem="yZd-Nk-cIj" firstAttribute="leading" secondItem="2Di-da-tSU" secondAttribute="leadingMargin" id="NZ2-zh-0qw"/>
+                            <constraint firstItem="RTp-XL-nrV" firstAttribute="top" secondItem="10T-4b-bvG" secondAttribute="bottom" constant="59" id="OVd-fx-Jti"/>
+                            <constraint firstItem="OAP-w5-M5K" firstAttribute="trailing" secondItem="7ur-jI-vib" secondAttribute="trailing" id="OtX-uD-Irk"/>
+                            <constraint firstItem="OAP-w5-M5K" firstAttribute="leading" secondItem="yZd-Nk-cIj" secondAttribute="leading" id="Q15-Eu-49F"/>
+                            <constraint firstItem="OAP-w5-M5K" firstAttribute="trailing" secondItem="yZd-Nk-cIj" secondAttribute="trailing" id="RGs-yj-xnp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="yZd-Nk-cIj" secondAttribute="trailing" constant="5" id="Tz0-nq-37h"/>
+                            <constraint firstItem="yZd-Nk-cIj" firstAttribute="top" secondItem="RTp-XL-nrV" secondAttribute="bottom" constant="8" symbolic="YES" id="Vxi-wR-8bU"/>
+                            <constraint firstItem="jPZ-ac-YJr" firstAttribute="trailing" secondItem="7ur-jI-vib" secondAttribute="trailing" id="g45-c0-bhg"/>
+                            <constraint firstItem="OAP-w5-M5K" firstAttribute="top" secondItem="yZd-Nk-cIj" secondAttribute="bottom" constant="8" symbolic="YES" id="oid-CU-5ep"/>
+                            <constraint firstItem="jPZ-ac-YJr" firstAttribute="top" secondItem="7ur-jI-vib" secondAttribute="bottom" constant="8" symbolic="YES" id="uON-Uk-Vy7"/>
+                            <constraint firstItem="7ur-jI-vib" firstAttribute="leading" secondItem="jPZ-ac-YJr" secondAttribute="leading" id="wwB-r2-5Jn"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e29-0V-odi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -295,4 +357,7 @@
             <point key="canvasLocation" x="422" y="-401"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Tic_Tac_Toe_empty.png" width="552" height="541"/>
+    </resources>
 </document>
