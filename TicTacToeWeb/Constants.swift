@@ -70,5 +70,9 @@ class Constants: NSObject {
     // Play
     static let PLAY_ID: String = "playid"
     static let POSITON: String = "position"
+    
+    // Options
+    static let X: String = "x"
+    static let O: String = "o"
 
 }

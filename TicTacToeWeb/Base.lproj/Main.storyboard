@@ -91,10 +91,10 @@
             </objects>
             <point key="canvasLocation" x="1179" y="-401"/>
         </scene>
-        <!--View Controller-->
+        <!--Game View Controller-->
         <scene sceneID="8JH-zU-auj">
             <objects>
-                <viewController id="DyK-4d-NcE" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GameView" id="DyK-4d-NcE" customClass="GameViewController" customModule="TicTacToe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="LMz-Yo-R2h"/>
                         <viewControllerLayoutGuide type="bottom" id="MFT-Bk-wWf"/>
@@ -106,48 +106,75 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Tic_Tac_Toe_empty.png" translatesAutoresizingMaskIntoConstraints="NO" id="Dcr-xh-Moc">
                                 <rect key="frame" x="43" y="107" width="515" height="459"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qM9-2A-E1H">
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qM9-2A-E1H">
                                 <rect key="frame" x="43" y="107" width="154" height="143"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="143" id="As4-gV-3xQ"/>
                                     <constraint firstAttribute="width" constant="154" id="nZV-Nk-uab"/>
                                 </constraints>
                                 <state key="normal" title="1"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="QLo-0z-GXk"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XX-PG-aic">
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6XX-PG-aic">
                                 <rect key="frame" x="217" y="107" width="154" height="143"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="154" id="cwJ-1n-8CL"/>
                                 </constraints>
                                 <state key="normal" title="2"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="KnL-SJ-tfh"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8cU-U2-dGO">
+                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8cU-U2-dGO">
                                 <rect key="frame" x="394" y="107" width="154" height="143"/>
                                 <state key="normal" title="3"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="Itx-qT-Fvh"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZ0-hh-7Yo">
+                            <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bZ0-hh-7Yo">
                                 <rect key="frame" x="43" y="265" width="154" height="143"/>
                                 <state key="normal" title="4"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="2MH-i7-M1k"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dV0-5U-OYg">
+                            <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dV0-5U-OYg">
                                 <rect key="frame" x="217" y="265" width="154" height="143"/>
                                 <state key="normal" title="5"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="1qk-CY-1Rw"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Orm-i8-6FV">
+                            <button opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Orm-i8-6FV">
                                 <rect key="frame" x="394" y="265" width="154" height="143"/>
                                 <state key="normal" title="6"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="9wO-bQ-hOm"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4h-FQ-SlD">
+                            <button opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K4h-FQ-SlD">
                                 <rect key="frame" x="43" y="423" width="154" height="143"/>
                                 <state key="normal" title="7"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="Cl3-ZK-0qP"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCD-it-5sb">
+                            <button opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCD-it-5sb">
                                 <rect key="frame" x="217" y="423" width="154" height="143"/>
                                 <state key="normal" title="8"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="CVA-YO-W8b"/>
+                                </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3u-OB-tcF">
+                            <button opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n3u-OB-tcF">
                                 <rect key="frame" x="394" y="423" width="154" height="143"/>
                                 <state key="normal" title="9"/>
+                                <connections>
+                                    <action selector="UIButtonClicked:" destination="DyK-4d-NcE" eventType="touchUpInside" id="GHe-8c-mkZ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,6 +224,17 @@
                             <constraint firstItem="n3u-OB-tcF" firstAttribute="leading" secondItem="Orm-i8-6FV" secondAttribute="leading" id="xxx-2i-j0O"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="pos1" destination="qM9-2A-E1H" id="QqE-V5-uzx"/>
+                        <outlet property="pos2" destination="6XX-PG-aic" id="sot-pM-lnk"/>
+                        <outlet property="pos3" destination="8cU-U2-dGO" id="MCS-Yk-dUo"/>
+                        <outlet property="pos4" destination="bZ0-hh-7Yo" id="kgy-It-9K3"/>
+                        <outlet property="pos5" destination="dV0-5U-OYg" id="BRu-Bs-cxW"/>
+                        <outlet property="pos6" destination="Orm-i8-6FV" id="Zbu-mi-dKI"/>
+                        <outlet property="pos7" destination="K4h-FQ-SlD" id="BXb-nT-Gij"/>
+                        <outlet property="pos8" destination="KCD-it-5sb" id="rw8-vu-rtD"/>
+                        <outlet property="pos9" destination="n3u-OB-tcF" id="i3r-Qd-3fP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WYT-dA-hfQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
