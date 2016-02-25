@@ -27,6 +27,9 @@ class GameViewController: UIViewController {
     // This one check if you has last played
     var lastPlayed: Bool = false
     
+    // This one will load all button that have been already selected
+    var buttonTouched: [Bool] = [ true, false, false, false, false, false, false, false, false, false ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         resetButtonLabels()
@@ -35,18 +38,17 @@ class GameViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     
     @IBAction func UIButtonClicked(sender: UIButton) {
-
+        print(sender.tag)
+        if !buttonTouched[sender.tag] {
+            buttonTouched[sender.tag] = true
+            lastPlayed = true
+            setImageForSpot(sender.tag + 1, played: lastPlayed)
+        }
     
     }
 
-    
     
     func resetButtonLabels() {
         pos1.setTitle("", forState: UIControlState.Normal)
@@ -61,6 +63,43 @@ class GameViewController: UIViewController {
     }
     
     
+    func setImageForSpot(spot: Int, played: Bool) {
+        let playerMark = (played) ? Constants.X_IMAGE : Constants.O_IMAGE
+
+        switch spot {
+        case 1:
+            pos1.imageView?.image = UIImage(named: playerMark)
+            
+        case 2:
+            pos2.imageView?.image = UIImage(named: playerMark)
+            
+        case 3:
+            pos3.imageView?.image = UIImage(named: playerMark)
+            
+        case 4:
+            pos4.imageView?.image = UIImage(named: playerMark)
+            
+        case 5:
+            pos5.imageView?.image = UIImage(named: playerMark)
+            
+        case 6:
+            pos6.imageView?.image = UIImage(named: playerMark)
+            
+        case 7:
+            pos7.imageView?.image = UIImage(named: playerMark)
+            
+        case 8:
+            pos8.imageView?.image = UIImage(named: playerMark)
+            
+        case 9:
+            pos9.imageView?.image = UIImage(named: playerMark)
+            
+        default:
+            pos5.imageView?.image = UIImage(named: playerMark)
+            
+        }
+    }
+
     
 
     /*

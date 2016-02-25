@@ -73,6 +73,9 @@ class Constants: NSObject {
     
     // Options
     static let X: String = "x"
+    static let X_IMAGE: String = "x_image"
     static let O: String = "o"
+    static let O_IMAGE: String = "o_image"
+    
 
 }
