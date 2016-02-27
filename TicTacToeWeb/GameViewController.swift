@@ -34,7 +34,7 @@ class GameViewController: UIViewController {
     
     
     // This value will come from the REST response.
-    var playerSelection: String = Constants.X
+    var playerSelection: String = Constants.O
     
     // This one check if you has last played
     var lastPlayed: Bool = false
@@ -54,15 +54,15 @@ class GameViewController: UIViewController {
         if !buttonTouched[sender.tag] {
             buttonTouched[sender.tag] = true
             lastPlayed = true
-            setImageForSpot(sender.tag, played: lastPlayed)
+            setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
         }
     
     }
 
   
     
-    func setImageForSpot(spot: Int, played: Bool) {
-        let playerMark = (played) ? Constants.X_IMAGE : Constants.O_IMAGE
+    func setImageForSpot(spot: Int, played: Bool, selection: String) {
+        let playerMark = (selection == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
         let image: UIImage = UIImage(named: playerMark)!
 
         switch spot {

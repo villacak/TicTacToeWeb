@@ -370,6 +370,8 @@
                             <constraint firstItem="V9I-Ms-KxN" firstAttribute="centerY" secondItem="8og-TT-mSk" secondAttribute="centerY" id="Ecn-fT-7HW"/>
                             <constraint firstItem="V9I-Ms-KxN" firstAttribute="firstBaseline" secondItem="mai-UA-EC5" secondAttribute="firstBaseline" id="Ewr-Ao-VUF"/>
                             <constraint firstItem="zjo-iB-4Ky" firstAttribute="baseline" secondItem="27s-SU-gdK" secondAttribute="baseline" id="Fjc-Lo-z3L"/>
+                            <constraint firstItem="V9I-Ms-KxN" firstAttribute="leading" secondItem="mai-UA-EC5" secondAttribute="trailing" constant="30" id="GG0-eb-RQE"/>
+                            <constraint firstItem="zjo-iB-4Ky" firstAttribute="leading" secondItem="27s-SU-gdK" secondAttribute="trailing" constant="30" id="GNe-Ao-sZp"/>
                             <constraint firstItem="lPH-u5-jj9" firstAttribute="leading" secondItem="y99-4D-JB9" secondAttribute="leading" id="N66-Lg-d0g"/>
                             <constraint firstItem="V9I-Ms-KxN" firstAttribute="leading" secondItem="InV-Xw-gAs" secondAttribute="leading" id="PBY-xV-kSH"/>
                             <constraint firstItem="27s-SU-gdK" firstAttribute="top" secondItem="Cau-Qc-v1v" secondAttribute="bottom" constant="34" id="PEY-dP-QXq"/>
@@ -381,6 +383,7 @@
                             <constraint firstItem="YAQ-EO-ezr" firstAttribute="leading" secondItem="mai-UA-EC5" secondAttribute="leading" id="Wbi-yV-DdW"/>
                             <constraint firstItem="lPH-u5-jj9" firstAttribute="baseline" secondItem="Kgd-07-rIv" secondAttribute="firstBaseline" id="a0l-Qr-9dN"/>
                             <constraint firstItem="Kgd-07-rIv" firstAttribute="bottom" secondItem="lPH-u5-jj9" secondAttribute="bottom" id="c5W-S5-918"/>
+                            <constraint firstItem="y99-4D-JB9" firstAttribute="leading" secondItem="YAQ-EO-ezr" secondAttribute="trailing" constant="30" id="cYf-ha-Mr1"/>
                             <constraint firstItem="mai-UA-EC5" firstAttribute="top" secondItem="YAQ-EO-ezr" secondAttribute="bottom" constant="32" id="fuR-pG-nnA"/>
                             <constraint firstItem="27s-SU-gdK" firstAttribute="trailing" secondItem="Cau-Qc-v1v" secondAttribute="trailing" id="gId-eA-cUr"/>
                             <constraint firstItem="InV-Xw-gAs" firstAttribute="baseline" secondItem="Cau-Qc-v1v" secondAttribute="baseline" id="h5g-dm-bFo"/>
@@ -388,6 +391,7 @@
                             <constraint firstItem="zjo-iB-4Ky" firstAttribute="firstBaseline" secondItem="27s-SU-gdK" secondAttribute="firstBaseline" id="iKV-rh-pL8"/>
                             <constraint firstItem="lPH-u5-jj9" firstAttribute="top" secondItem="Kgd-07-rIv" secondAttribute="top" id="imp-E1-inV"/>
                             <constraint firstItem="Kgd-07-rIv" firstAttribute="leading" secondItem="8og-TT-mSk" secondAttribute="leadingMargin" constant="77" id="trm-cv-4tL"/>
+                            <constraint firstItem="InV-Xw-gAs" firstAttribute="leading" secondItem="Cau-Qc-v1v" secondAttribute="trailing" constant="30" id="uV8-KO-j0i"/>
                             <constraint firstAttribute="bottom" secondItem="6RE-Tc-JLW" secondAttribute="bottom" constant="20" symbolic="YES" id="vZP-H5-Rh0"/>
                             <constraint firstItem="YAQ-EO-ezr" firstAttribute="top" secondItem="Kgd-07-rIv" secondAttribute="bottom" constant="67" id="veT-ar-43n"/>
                             <constraint firstItem="y99-4D-JB9" firstAttribute="leading" secondItem="V9I-Ms-KxN" secondAttribute="leading" id="vu9-Z5-wnQ"/>
