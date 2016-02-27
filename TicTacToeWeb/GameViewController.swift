@@ -51,7 +51,6 @@ class GameViewController: UIViewController {
 
     
     @IBAction func UIButtonClicked(sender: UIButton) {
-        print(sender.tag)
         if !buttonTouched[sender.tag] {
             buttonTouched[sender.tag] = true
             lastPlayed = true
