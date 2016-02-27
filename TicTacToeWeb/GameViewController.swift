@@ -21,6 +21,18 @@ class GameViewController: UIViewController {
     @IBOutlet weak var pos9: UIButton!
     
     
+    var imgPos1: UIImageView!
+    var imgPos2: UIImageView!
+    var imgPos3: UIImageView!
+    var imgPos4: UIImageView!
+    var imgPos5: UIImageView!
+    var imgPos6: UIImageView!
+    var imgPos7: UIImageView!
+    var imgPos8: UIImageView!
+    var imgPos9: UIImageView!
+    
+    
+    
     // This value will come from the REST response.
     var playerSelection: String = Constants.X
     
@@ -32,7 +44,6 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        resetButtonLabels()
         
 
         // Do any additional setup after loading the view.
@@ -44,63 +55,56 @@ class GameViewController: UIViewController {
         if !buttonTouched[sender.tag] {
             buttonTouched[sender.tag] = true
             lastPlayed = true
-            setImageForSpot(sender.tag + 1, played: lastPlayed)
+            setImageForSpot(sender.tag, played: lastPlayed)
         }
     
     }
 
-    
-    func resetButtonLabels() {
-        pos1.setTitle("", forState: UIControlState.Normal)
-        pos2.setTitle("", forState: UIControlState.Normal)
-        pos3.setTitle("", forState: UIControlState.Normal)
-        pos4.setTitle("", forState: UIControlState.Normal)
-        pos5.setTitle("", forState: UIControlState.Normal)
-        pos6.setTitle("", forState: UIControlState.Normal)
-        pos7.setTitle("", forState: UIControlState.Normal)
-        pos8.setTitle("", forState: UIControlState.Normal)
-        pos9.setTitle("", forState: UIControlState.Normal)
-    }
-    
+  
     
     func setImageForSpot(spot: Int, played: Bool) {
         let playerMark = (played) ? Constants.X_IMAGE : Constants.O_IMAGE
+        let image: UIImage = UIImage(named: playerMark)!
 
         switch spot {
         case 1:
-            pos1.imageView?.image = UIImage(named: playerMark)
+            pos1.setImage(image, forState: UIControlState.Normal)
             
         case 2:
-            pos2.imageView?.image = UIImage(named: playerMark)
+            pos2.setImage(image, forState: UIControlState.Normal)
             
         case 3:
-            pos3.imageView?.image = UIImage(named: playerMark)
+            pos3.setImage(image, forState: UIControlState.Normal)
             
         case 4:
-            pos4.imageView?.image = UIImage(named: playerMark)
+            pos4.setImage(image, forState: UIControlState.Normal)
             
         case 5:
-            pos5.imageView?.image = UIImage(named: playerMark)
+            pos5.setImage(image, forState: UIControlState.Normal)
             
         case 6:
-            pos6.imageView?.image = UIImage(named: playerMark)
+            pos6.setImage(image, forState: UIControlState.Normal)
             
         case 7:
-            pos7.imageView?.image = UIImage(named: playerMark)
+            pos7.setImage(image, forState: UIControlState.Normal)
             
         case 8:
-            pos8.imageView?.image = UIImage(named: playerMark)
+            pos8.setImage(image, forState: UIControlState.Normal)
             
         case 9:
-            pos9.imageView?.image = UIImage(named: playerMark)
+            pos9.setImage(image, forState: UIControlState.Normal)
             
         default:
-            pos5.imageView?.image = UIImage(named: playerMark)
+            pos5.setImage(image, forState: UIControlState.Normal)
             
         }
     }
 
     
+    
+    func reziseImage() {
+        
+    }
 
     /*
     // MARK: - Navigation
