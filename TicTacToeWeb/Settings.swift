@@ -11,12 +11,22 @@ import UIKit
 class Settings: NSObject {
     
     
-    let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    static let defaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
 
+    
+    
+    //
+    // Check if exist already some data in the NSUSerDefaults
+    //
+    static func checkIfNSUserDefaultsHasBeenCreated() -> Bool {
+        return defaults.objectForKey(Constants.USER_NAME) != nil
+    }
+    
+    
     //
     // Set defaults
     //
-    func initialDefaults() {
+    static func initialDefaults() {
         defaults.setObject(Constants.EMPTY_STRING, forKey: Constants.USER_NAME)
         defaults.setInteger(0, forKey: Constants.WINS)
         defaults.setInteger(0, forKey: Constants.LOSES)
@@ -29,7 +39,7 @@ class Settings: NSObject {
     //
     // Reset defaults
     //
-    func resetDefaults() {
+    static func resetDefaults() {
         defaults.setInteger(0, forKey: Constants.WINS)
         defaults.setInteger(0, forKey: Constants.LOSES)
         defaults.setInteger(0, forKey: Constants.DRAWS)
@@ -41,11 +51,11 @@ class Settings: NSObject {
     //
     // User get and set
     //
-    func updateUser(name: String) {
+    static func updateUser(name: String) {
         defaults.setObject(name, forKey: Constants.USER_NAME)
     }
     
-    func getUser() -> String {
+    static func getUser() -> String {
         var userName: String = Constants.EMPTY_STRING
         if let tempName: String = defaults.stringForKey(Constants.USER_NAME) {
             userName = tempName
@@ -57,12 +67,12 @@ class Settings: NSObject {
     //
     // Wins get and set
     //
-    func updateWins() {
+    static func updateWins() {
         let wins: Int = getWins() + 1
         defaults.setInteger(wins, forKey: Constants.WINS)
     }
     
-    func getWins() -> Int {
+    static func getWins() -> Int {
         var wins: Int = 0
         if let tempWins: Int = defaults.integerForKey(Constants.WINS) {
             wins = tempWins
@@ -74,12 +84,12 @@ class Settings: NSObject {
     //
     // Loses get and set
     //
-    func updateLoses() {
+    static func updateLoses() {
         let loses: Int = getLoses() + 1
         defaults.setInteger(loses, forKey: Constants.LOSES)
     }
     
-    func getLoses() -> Int {
+    static func getLoses() -> Int {
         var loses: Int = 0
         if let tempLoses: Int = defaults.integerForKey(Constants.LOSES) {
             loses = tempLoses
@@ -91,12 +101,12 @@ class Settings: NSObject {
     //
     // Draws get and set
     //
-    func updateDraws() {
+    static func updateDraws() {
         let draws: Int = getDraws() + 1
         defaults.setInteger(draws, forKey: Constants.DRAWS)
     }
     
-    func getDraws() -> Int {
+    static func getDraws() -> Int {
         var draws: Int = 0
         if let tempDraws: Int = defaults.integerForKey(Constants.DRAWS) {
             draws = tempDraws
@@ -108,11 +118,11 @@ class Settings: NSObject {
     //
     // Last Date Played get and set
     //
-    func updateLastDatePlayed(date: String) {
+    static func updateLastDatePlayed(date: String) {
         defaults.setObject(date, forKey: Constants.LAST_DATE_PLAYED)
     }
     
-    func getLastDatePlayed() -> String {
+    static func getLastDatePlayed() -> String {
         var date: String = Constants.EMPTY_STRING
         if let tempDate: String = defaults.stringForKey(Constants.LAST_DATE_PLAYED) {
             date = tempDate
@@ -124,11 +134,11 @@ class Settings: NSObject {
     //
     // Games get and set
     //
-    func updateGame(game: Int) {
+    static func updateGame(game: Int) {
         defaults.setInteger(game, forKey: Constants.GAME)
     }
     
-    func getGame() -> Int {
+    static func getGame() -> Int {
         var game: Int = 0
         if let tempGame: Int = defaults.integerForKey(Constants.GAME) {
             game = tempGame

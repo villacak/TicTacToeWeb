@@ -46,6 +46,8 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
 
+        // check if exist a game or create a new
+
         // Do any additional setup after loading the view.
     }
 

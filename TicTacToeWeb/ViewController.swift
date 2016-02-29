@@ -9,18 +9,39 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var scoresBtn: UIButton!
+    @IBOutlet weak var settingsBtn: UIButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        callServiceTest()
+        
+        initialChecks()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
+    
+    func initialChecks() {
+        if !Settings.checkIfNSUserDefaultsHasBeenCreated() {
+            Settings.initialDefaults()
+        }
+        
+        if Settings.getUser() != Constants.EMPTY_STRING {
+            playBtn.enabled = true
+            scoresBtn.enabled = true
+        } else {
+            playBtn.enabled = false
+            scoresBtn.enabled = false
+        }
+    }
+    
+    
     
     func callServiceTest() {
         let jsonUtils: JSONUtils = JSONUtils()
@@ -34,6 +55,6 @@ class ViewController: UIViewController {
             }
         })
     }
-
+    
 }
 

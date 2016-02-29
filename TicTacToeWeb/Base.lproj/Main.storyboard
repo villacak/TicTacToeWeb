@@ -86,6 +86,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tic Tac Toe" id="NqB-80-vc9"/>
+                    <connections>
+                        <outlet property="playBtn" destination="jHr-8E-hUo" id="9Ve-pb-GyN"/>
+                        <outlet property="scoresBtn" destination="Z4q-YJ-I5s" id="yDM-S5-JNU"/>
+                        <outlet property="settingsBtn" destination="eYm-E0-rhA" id="Dxf-av-YXu"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
