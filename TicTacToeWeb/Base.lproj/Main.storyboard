@@ -410,10 +410,10 @@
             </objects>
             <point key="canvasLocation" x="1954" y="-401"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings View Controller-->
         <scene sceneID="jn3-O1-nnQ">
             <objects>
-                <viewController id="fsI-pu-FQU" sceneMemberID="viewController">
+                <viewController id="fsI-pu-FQU" customClass="SettingsViewController" customModule="TicTacToe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="10T-4b-bvG"/>
                         <viewControllerLayoutGuide type="bottom" id="rwt-AY-D2U"/>
