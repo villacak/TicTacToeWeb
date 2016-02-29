@@ -77,5 +77,11 @@ class Constants: NSObject {
     static let O: String = "o"
     static let O_IMAGE: String = "o_image"
     
+    
+    // Settings
+    static let WINS: String = "wins"
+    static let LOSES: String = "loses"
+    static let DRAWS: String = "draws"
+    
 
 }

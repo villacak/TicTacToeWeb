@@ -99,11 +99,6 @@ class GameViewController: UIViewController {
         }
     }
 
-    
-    
-    func reziseImage() {
-        
-    }
 
     /*
     // MARK: - Navigation
