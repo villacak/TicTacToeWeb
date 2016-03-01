@@ -52,6 +52,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func resetUserAction(sender: AnyObject) {
         Settings.updateUser(Constants.EMPTY_STRING)
+        userName.enabled = true
+        userName.becomeFirstResponder()
+        initialSettings()
     }
     
 
@@ -59,6 +62,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         Settings.resetWins()
         Settings.resetLoses()
         Settings.resetDraws()
+        initialSettings()
     }
     
     
