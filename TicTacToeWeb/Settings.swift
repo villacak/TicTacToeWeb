@@ -80,6 +80,10 @@ class Settings: NSObject {
         return wins
     }
     
+    static func resetWins() {
+        defaults.setInteger(0, forKey: Constants.WINS)
+    }
+    
     
     //
     // Loses get and set
@@ -95,6 +99,10 @@ class Settings: NSObject {
             loses = tempLoses
         }
         return loses
+    }
+    
+    static func resetLoses() {
+        defaults.setInteger(0, forKey: Constants.LOSES)
     }
 
     
@@ -112,6 +120,10 @@ class Settings: NSObject {
             draws = tempDraws
         }
         return draws
+    }
+    
+    static func resetDraws() {
+        defaults.setInteger(0, forKey: Constants.DRAWS)
     }
 
     

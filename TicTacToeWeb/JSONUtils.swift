@@ -20,7 +20,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {
@@ -47,7 +47,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {
@@ -74,7 +74,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {
@@ -101,7 +101,7 @@ class JSONUtils: NSObject {
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!
-        request.requestWithName(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
                 if let errorMessage = errorString  {

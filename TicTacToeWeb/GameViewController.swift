@@ -45,6 +45,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = Constants.GAME_TITLE
 
         // check if exist a game or create a new
 

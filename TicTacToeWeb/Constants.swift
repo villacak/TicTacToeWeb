@@ -84,4 +84,12 @@ class Constants: NSObject {
     static let DRAWS: String = "draws"
     
 
+    // Dialog titles and messages
+    static let SUCCESS_TITLE: String = "Success"
+    static let ERROR_TITLE: String = "Response Error"
+    static let GAME_TITLE: String = "Game"
+    static let STATS_TITLE: String = "Stats"
+    static let SETTINGS_TITLE: String = "Settings"
+    
+    static let SUCESS_CREATED_USER: String = "Success created new user"
 }

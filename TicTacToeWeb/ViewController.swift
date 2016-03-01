@@ -17,16 +17,18 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        initialChecks()
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        initialChecks()   
+    }
+    
+    
+    //
+    // Initial checks for the app
+    //
     func initialChecks() {
         if !Settings.checkIfNSUserDefaultsHasBeenCreated() {
             Settings.initialDefaults()
@@ -40,21 +42,5 @@ class ViewController: UIViewController {
             scoresBtn.enabled = false
         }
     }
-    
-    
-    
-    func callServiceTest() {
-        let jsonUtils: JSONUtils = JSONUtils()
-        var userTemp: User!
-        jsonUtils.callRequestForUserServices(name: "Klaus7", method: Constants.PUT_METHOD, service: Constants.USER_CREATE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                print(errorMessage)
-            } else {
-                userTemp = result
-                print(userTemp)
-            }
-        })
-    }
-    
 }
 
