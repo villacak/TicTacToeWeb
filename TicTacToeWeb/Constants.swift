@@ -72,6 +72,7 @@ class Constants: NSObject {
     static let POSITON: String = "position"
     
     // Options
+    static let SELECTION: String = "selection"
     static let X: String = "x"
     static let X_IMAGE: String = "x_image"
     static let O: String = "o"
@@ -83,13 +84,16 @@ class Constants: NSObject {
     static let LOSES: String = "loses"
     static let DRAWS: String = "draws"
     
+    // Function name for pooling
+    static let CHECK_OTHER_PLAYER: String = "poolingCheck"
 
     // Dialog titles and messages
     static let SUCCESS_TITLE: String = "Success"
     static let ERROR_TITLE: String = "Response Error"
     static let GAME_TITLE: String = "Game"
     static let STATS_TITLE: String = "Stats"
-    static let SETTINGS_TITLE: String = "Settings"
-    
+    static let SETTINGS_TITLE: String = "Settings"    
     static let SUCESS_CREATED_USER: String = "Success created new user"
+
+    static let POOLING_TIME: NSTimeInterval = 4.0
 }

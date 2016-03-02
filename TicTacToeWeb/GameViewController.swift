@@ -20,6 +20,8 @@ class GameViewController: UIViewController {
     @IBOutlet weak var pos8: UIButton!
     @IBOutlet weak var pos9: UIButton!
     
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
+    @IBOutlet weak var spinnerText: UILabel!
     
     var imgPos1: UIImageView!
     var imgPos2: UIImageView!
@@ -42,12 +44,20 @@ class GameViewController: UIViewController {
     // This one will load all button that have been already selected
     var buttonTouched: [Bool] = [ true, false, false, false, false, false, false, false, false, false ]
     
+    // For keep calling the services in time intervals
+    var poolingForCheck: NSTimer!
+    
+    // To know the position selected bu the user
+    var playerPosition: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = Constants.GAME_TITLE
-
+        hideSpinner()
+        
         // check if exist a game or create a new
+//        createOrGetGame()
 
         // Do any additional setup after loading the view.
     }
@@ -57,7 +67,9 @@ class GameViewController: UIViewController {
         if !buttonTouched[sender.tag] {
             buttonTouched[sender.tag] = true
             lastPlayed = true
+            playerPosition = "\(sender.tag)"
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
+            prepareForTheOtherUserPlay()
         }
     
     }
@@ -102,15 +114,44 @@ class GameViewController: UIViewController {
         }
     }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func hideSpinner() {
+        spinner.stopAnimating()
+        spinnerText.hidden = true
     }
-    */
+    
 
+    func prepareForTheOtherUserPlay() {
+        spinner.startAnimating()
+        spinnerText.hidden = false
+        poolingForCheck = NSTimer.scheduledTimerWithTimeInterval(Constants.POOLING_TIME, target: self, selector: Selector(Constants.CHECK_OTHER_PLAYER), userInfo: nil, repeats: true)
+    }
+    
+    
+    func poolingCheck() {
+        let jsonUtils: JSONUtils = JSONUtils()
+        jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY, controller: self, completionHandler: { (result, errorString) -> Void in
+            if let errorMessage = errorString  {
+                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                
+            } else {
+                
+            }
+            self.poolingForCheck.invalidate()
+            self.hideSpinner()
+        })
+    }
+    
+    
+    func createOrGetGame() {
+        let jsonUtils: JSONUtils = JSONUtils()
+        jsonUtils.callRequestForCreateGameService(name: Settings.getUser(), method: Constants.PUT_METHOD, service: Constants.GAME_CREATE, controller: self, completionHandler: { (result, errorString) -> Void in
+            if let errorMessage = errorString  {
+                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                
+            } else {
+                
+            }
+        })
+    }
+    
 }

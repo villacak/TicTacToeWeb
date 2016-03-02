@@ -158,4 +158,20 @@ class Settings: NSObject {
         return game
     }
 
+    
+    //
+    // Selection get and set
+    //
+    static func updateSelection(selection: String) {
+        defaults.setObject(selection, forKey: Constants.SELECTION)
+    }
+    
+    static func getSelection() -> String {
+        var selection: String = Constants.EMPTY_STRING
+        if let tempSelection: String = defaults.stringForKey(Constants.SELECTION) {
+            selection = tempSelection
+        }
+        return selection
+    }
+
 }

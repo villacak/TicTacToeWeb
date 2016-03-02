@@ -17,7 +17,9 @@ class StatsViewController: UIViewController {
     @IBOutlet weak var draws: UILabel!
     @IBOutlet weak var lastPlayedDate: UILabel!
     
-    
+    //
+    // Load stats when the view is loaded
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         

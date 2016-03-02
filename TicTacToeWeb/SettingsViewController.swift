@@ -16,6 +16,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var resetScoresBtn: UIButton!
     
     
+    //
+    // Load data when view has been loaded
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -44,33 +47,59 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    
+    //
+    // Create or retrieve user action
+    //
     @IBAction func newUserAction(sender: AnyObject) {
         view.endEditing(true)
         callUpdateUser(userName.text! as String)
     }
 
     
+    //
+    // Reset User action
+    //
     @IBAction func resetUserAction(sender: AnyObject) {
         Settings.updateUser(Constants.EMPTY_STRING)
         userName.enabled = true
         userName.becomeFirstResponder()
+        resetScores()
         initialSettings()
     }
     
 
+    //
+    // Reset Scores action
+    //
     @IBAction func resetScoresAction(sender: AnyObject) {
-        Settings.resetWins()
-        Settings.resetLoses()
-        Settings.resetDraws()
+        resetScores()
         initialSettings()
     }
     
     
+    //
+    // Reset Scores
+    //
+    func resetScores() {
+        Settings.resetWins()
+        Settings.resetLoses()
+        Settings.resetDraws()
+    }
+    
+    
+    //
+    // Delegate to dismiss the keyboard
+    //
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
+    
+    //
+    // Prepare buttons
+    //
     func setButtonsIfNoExistingUser() {
         newUserBtn.enabled = true
         resetUserBtn.enabled = false
