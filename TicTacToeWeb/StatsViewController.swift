@@ -12,6 +12,10 @@ class StatsViewController: UIViewController {
 
     
     @IBOutlet weak var userName: UILabel!
+    @IBOutlet weak var wins: UILabel!
+    @IBOutlet weak var loses: UILabel!
+    @IBOutlet weak var draws: UILabel!
+    @IBOutlet weak var lastPlayedDate: UILabel!
     
     
     override func viewDidLoad() {
@@ -20,8 +24,10 @@ class StatsViewController: UIViewController {
         self.title = Constants.STATS_TITLE
         
         userName.text = Settings.getUser()
-
-        // Do any additional setup after loading the view.
+        wins.text = "\(Settings.getWins())"
+        loses.text = "\(Settings.getLoses())"
+        draws.text = "\(Settings.getDraws())"
+        lastPlayedDate.text = Settings.getLastDatePlayed()
     }
 
     
