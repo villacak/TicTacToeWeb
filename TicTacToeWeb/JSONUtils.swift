@@ -94,10 +94,10 @@ class JSONUtils: NSObject {
     //
     // Call games service Finalize and return the JSON parsed
     //
-    func callRequestForFinalizeGameService(game game: String, selection: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
+    func callRequestForFinalizeGameService(name name: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
         
         let urlHelper: UrlHelper = UrlHelper()
-        let urlUserCreate: String = urlHelper.populateGameFinalize(game: game, selection: selection)
+        let urlUserCreate: String = urlHelper.populateGameFinalize(userName: name)
         let request: Requests = Requests()
         
         var responseAsNSDictinory: Dictionary<String, AnyObject>!

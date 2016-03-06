@@ -27,9 +27,9 @@ class UrlHelper: NSObject {
     //
     func populateServicesWithUserName(userName userName: String!, service: String!) -> String {
         var urlToReturn: String!
-        if service == Constants.USER_CREATE {
+        if service == Constants.USER_CREATE_SERVICE {
             urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_CREATE)\(userName)"
-        } else if service == Constants.USER_RETRIEVE {
+        } else if service == Constants.USER_RETRIEVE_SERVICE {
             urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_RETRIEVE)\(userName)"
         } else if service == Constants.USER_DELETE_SERVICE {
             urlToReturn = "\(Constants.URL_BASE)\(Constants.USER_DELETE)\(userName)"
@@ -59,8 +59,8 @@ class UrlHelper: NSObject {
     //
     // Populate Games finalize url service
     //
-    func populateGameFinalize(game game: String, selection: String) -> String {
-        let params: [String: String] = [game : game, selection : selection]
+    func populateGameFinalize(userName userName: String) -> String {
+        let params: [String: String] = ["name" : userName]
         let encodedParams: String = encodeParameters(params: params)
         let urlToReturn: String = "\(Constants.URL_BASE)\(Constants.GAME_FINALIZE)\(encodedParams)"
         return urlToReturn

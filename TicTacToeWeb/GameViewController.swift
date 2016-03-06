@@ -50,6 +50,10 @@ class GameViewController: UIViewController {
     // To know the position selected bu the user
     var playerPosition: String!
     
+    
+    //
+    // Load settings when view did load
+    //
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,12 +61,15 @@ class GameViewController: UIViewController {
         hideSpinner()
         
         // check if exist a game or create a new
-//        createOrGetGame()
+        clearGames()
 
         // Do any additional setup after loading the view.
     }
 
     
+    //
+    // when user tap in a position
+    //
     @IBAction func UIButtonClicked(sender: UIButton) {
         if !buttonTouched[sender.tag] {
             buttonTouched[sender.tag] = true
@@ -75,7 +82,9 @@ class GameViewController: UIViewController {
     }
 
   
-    
+    //
+    // Set image in the button
+    //
     func setImageForSpot(spot: Int, played: Bool, selection: String) {
         let playerMark = (selection == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
         let image: UIImage = UIImage(named: playerMark)!
@@ -114,12 +123,19 @@ class GameViewController: UIViewController {
         }
     }
 
+    
+    //
+    // Hide spinner
+    //
     func hideSpinner() {
         spinner.stopAnimating()
         spinnerText.hidden = true
     }
     
 
+    //
+    // Prepare for check if the other player has played
+    //
     func prepareForTheOtherUserPlay() {
         spinner.startAnimating()
         spinnerText.hidden = false
@@ -127,6 +143,9 @@ class GameViewController: UIViewController {
     }
     
     
+    //
+    // Call the check game service
+    //
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY, controller: self, completionHandler: { (result, errorString) -> Void in
@@ -142,14 +161,33 @@ class GameViewController: UIViewController {
     }
     
     
-    func createOrGetGame() {
+    
+    //
+    // Clear all games from the actual user
+    //
+    func clearGames() {
         let jsonUtils: JSONUtils = JSONUtils()
-        jsonUtils.callRequestForCreateGameService(name: Settings.getUser(), method: Constants.PUT_METHOD, service: Constants.GAME_CREATE, controller: self, completionHandler: { (result, errorString) -> Void in
+        jsonUtils.callRequestForFinalizeGameService(name: Settings.getUser(), method: Constants.GET_METHOD, service: Constants.GAME_FINALIZE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             if let errorMessage = errorString  {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                
+            }
+            self.createOrGetGame()
+        })
+    }
+    
+    
+    //
+    // Call the create game or get a game with one person on hold.
+    //
+    func createOrGetGame() {
+        let jsonUtils: JSONUtils = JSONUtils()
+        jsonUtils.callRequestForCreateGameService(name: Settings.getUser(), method: Constants.PUT_METHOD, service: Constants.GAME_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
+            if let errorMessage = errorString  {
+                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
             } else {
-                
+                let game: Game = result!;
+                Settings.updateGame(game.game!)
+                Settings.updateSelection(game.playerXOrO!)
             }
         })
     }

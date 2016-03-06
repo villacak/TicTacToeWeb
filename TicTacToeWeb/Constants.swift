@@ -18,7 +18,7 @@ class Constants: NSObject {
     
     // Endpoints
     // Game Services
-    static let GAME_CREATE: String = "/game/v1/create"
+    static let GAME_CREATE: String = "/game/v1/create/"
     static let GAME_PLAY: String = "/game/v1/play?"
     static let GAME_CHECK: String = "/game/v1/check?"
     static let GAME_FINALIZE: String = "/game/v1/finalize?"
@@ -37,6 +37,7 @@ class Constants: NSObject {
     static let GAME_CREATE_SERVICE: String = "gameCreate"
     static let GAME_PLAY_SERVICE: String = "gamePlay"
     static let GAME_CHECK_SERVICE: String = "gameCheck"
+    static let GAME_FINALIZE_SERVICE: String = "gameFinalize"
 
     
     // REST Call Methods

@@ -115,7 +115,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             NSCharacterSet.whitespaceAndNewlineCharacterSet()
         )
         let jsonUtils: JSONUtils = JSONUtils()
-        jsonUtils.callRequestForUserServices(name: trimName, method: Constants.PUT_METHOD, service: Constants.USER_CREATE, controller: self, completionHandler: { (result, errorString) -> Void in
+        jsonUtils.callRequestForUserServices(name: trimName, method: Constants.PUT_METHOD, service: Constants.USER_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             if let errorMessage = errorString  {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
                 self.userName.becomeFirstResponder()
