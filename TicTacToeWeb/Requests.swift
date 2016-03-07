@@ -24,6 +24,7 @@ class Requests: NSObject {
             if let data = data {
                 do {
                     let jsonResult: NSDictionary? = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                    // Add the check for error form here
                     completionHandler(result: jsonResult, error: nil)
                 } catch let error as NSError {
                     completionHandler(result: nil, error: error.localizedDescription)
