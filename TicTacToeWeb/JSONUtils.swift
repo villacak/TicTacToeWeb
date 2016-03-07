@@ -191,4 +191,12 @@ class JSONUtils: NSObject {
         play.position = dictionaryResponse[Constants.POSITON] as? Int
         return play
     }
+    
+    
+    //
+    // Check if the response has an error
+    //
+    func checkForError(dictionaryResponse: Dictionary<String, AnyObject>) {
+        
+    }
 }

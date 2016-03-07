@@ -61,8 +61,10 @@ class GameViewController: UIViewController {
         hideSpinner()
         
         // check if exist a game or create a new
-        clearGames()
-
+//        clearGames()
+        createOrGetGame()
+        
+        
         // Do any additional setup after loading the view.
     }
 
