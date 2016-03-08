@@ -50,6 +50,8 @@ class GameViewController: UIViewController {
     // To know the position selected bu the user
     var playerPosition: String!
     
+    // Error counter to invalidate the pooling
+    var errorCounter: Int = 0
     
     //
     // Load settings when view did load
@@ -61,8 +63,8 @@ class GameViewController: UIViewController {
         hideSpinner()
         
         // check if exist a game or create a new
-//        clearGames()
-        createOrGetGame()
+        clearGames()
+//        createOrGetGame()
         
         
         // Do any additional setup after loading the view.
@@ -132,6 +134,7 @@ class GameViewController: UIViewController {
     func hideSpinner() {
         spinner.stopAnimating()
         spinnerText.hidden = true
+        
     }
     
 
@@ -141,6 +144,7 @@ class GameViewController: UIViewController {
     func prepareForTheOtherUserPlay() {
         spinner.startAnimating()
         spinnerText.hidden = false
+        disableBoard()
         poolingForCheck = NSTimer.scheduledTimerWithTimeInterval(Constants.POOLING_TIME, target: self, selector: Selector(Constants.CHECK_OTHER_PLAYER), userInfo: nil, repeats: true)
     }
     
@@ -151,17 +155,25 @@ class GameViewController: UIViewController {
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY, controller: self, completionHandler: { (result, errorString) -> Void in
+            self.hideSpinner()
+            self.enableBoard()
             if let errorMessage = errorString  {
+                self.errorCounter++
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                
+                if self.errorCounter > 3 {
+                    self.poolingForCheck.invalidate()
+                    self.errorCounter = 0
+                    self.dismissTheView()
+                }
             } else {
-                
+                self.poolingForCheck.invalidate()
+                self.errorCounter = 0
+                self.chekResponse(result!)
             }
             self.poolingForCheck.invalidate()
             self.hideSpinner()
         })
     }
-    
     
     
     //
@@ -172,8 +184,10 @@ class GameViewController: UIViewController {
         jsonUtils.callRequestForFinalizeGameService(name: Settings.getUser(), method: Constants.GET_METHOD, service: Constants.GAME_FINALIZE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             if let errorMessage = errorString  {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                self.dismissTheView()
+            } else {
+                self.createOrGetGame()
             }
-            self.createOrGetGame()
         })
     }
     
@@ -186,6 +200,7 @@ class GameViewController: UIViewController {
         jsonUtils.callRequestForCreateGameService(name: Settings.getUser(), method: Constants.PUT_METHOD, service: Constants.GAME_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             if let errorMessage = errorString  {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                self.dismissTheView()
             } else {
                 let game: Game = result!;
                 Settings.updateGame(game.game!)
@@ -194,4 +209,56 @@ class GameViewController: UIViewController {
         })
     }
     
+    
+    
+    //
+    // Give the right time to dismiss the view
+    //
+    func dismissTheView() {
+        let delay = 1.5 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        })
+    }
+    
+    
+    //
+    // Disable board
+    //
+    func disableBoard() {
+        pos1.enabled = false;
+        pos2.enabled = false;
+        pos3.enabled = false;
+        pos4.enabled = false;
+        pos5.enabled = false;
+        pos6.enabled = false;
+        pos7.enabled = false;
+        pos8.enabled = false;
+        pos9.enabled = false;
+    }
+    
+    
+    //
+    // Enable board
+    //
+    func enableBoard() {
+        pos1.enabled = true;
+        pos2.enabled = true;
+        pos3.enabled = true;
+        pos4.enabled = true;
+        pos5.enabled = true;
+        pos6.enabled = true;
+        pos7.enabled = true;
+        pos8.enabled = true;
+        pos9.enabled = true;
+    }
+    
+    
+    //
+    // Check response
+    //
+    func chekResponse(result: Game) {
+        
+    }
 }
