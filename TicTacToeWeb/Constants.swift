@@ -98,6 +98,8 @@ class Constants: NSObject {
     static let ERROR_TO_RETURN: String = "ErrorToReturn"
     static let STATUS: String = "status"
     static let MESSAGE: String = "message"
-
+    static let INFORMATION: String = "Information"
+    static let DELETE: String = "delete"
+    
     static let POOLING_TIME: NSTimeInterval = 4.0
 }

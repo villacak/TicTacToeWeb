@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
     
     
     // This value will come from the REST response.
-    var playerSelection: String = Constants.O
+    var playerSelection: String!
     
     // This one check if you has last played
     var lastPlayed: Bool = false
@@ -205,6 +205,8 @@ class GameViewController: UIViewController {
                 let game: Game = result!;
                 Settings.updateGame(game.game!)
                 Settings.updateSelection(game.playerXOrO!)
+                Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: "X always start.\n You are \(Settings.getSelection())", controller: self)
+                self.playerSelection = Settings.getSelection()
             }
         })
     }

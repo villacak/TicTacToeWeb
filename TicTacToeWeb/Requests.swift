@@ -28,6 +28,9 @@ class Requests: NSObject {
                     if let tempErrorMessage: NSArray = jsonResult![Constants.ERROR_TO_RETURN] as? NSArray {
                         let statusMessage = self.prepareErrorMessage(tempErrorMessage[0] as? String)
                         completionHandler(result: nil, error: "\(statusMessage.firstItem)\n\(statusMessage.secondItem)")
+                    } else if let tempNothing: Dictionary<String, AnyObject> = jsonResult![Constants.DELETE] as? Dictionary<String, AnyObject> {
+                        print(tempNothing)
+                        completionHandler(result: jsonResult, error: nil)
                     } else {
                         completionHandler(result: jsonResult, error: nil)
                     }
