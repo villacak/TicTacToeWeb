@@ -95,6 +95,9 @@ class Constants: NSObject {
     static let STATS_TITLE: String = "Stats"
     static let SETTINGS_TITLE: String = "Settings"    
     static let SUCESS_CREATED_USER: String = "Success created new user"
+    static let ERROR_TO_RETURN: String = "ErrorToReturn"
+    static let STATUS: String = "status"
+    static let MESSAGE: String = "message"
 
     static let POOLING_TIME: NSTimeInterval = 4.0
 }
