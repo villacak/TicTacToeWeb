@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Requests: NSObject {
-
+    
     //
     // Generic Request
     //
@@ -23,16 +23,20 @@ class Requests: NSObject {
         let task = session.dataTaskWithRequest(request, completionHandler: { (data, response, error) in
             if let data = data {
                 do {
-                    let jsonResult: NSDictionary? = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers) as? NSDictionary
-                    // Add the check for error form here
-                    if let tempErrorMessage: NSArray = jsonResult![Constants.ERROR_TO_RETURN] as? NSArray {
-                        let statusMessage = self.prepareErrorMessage(tempErrorMessage[0] as? String)
-                        completionHandler(result: nil, error: "\(statusMessage.firstItem)\n\(statusMessage.secondItem)")
-                    } else if let tempNothing: Dictionary<String, AnyObject> = jsonResult![Constants.DELETE] as? Dictionary<String, AnyObject> {
-                        print(tempNothing)
-                        completionHandler(result: jsonResult, error: nil)
+                    if data.length > 0 {
+                        let jsonResult: NSDictionary? = try NSJSONSerialization.JSONObjectWithData(data, options:NSJSONReadingOptions.MutableContainers) as? NSDictionary
+                        // Add the check for error form here, if no result or result
+                        if let tempErrorMessage: NSArray = jsonResult![Constants.ERROR_TO_RETURN] as? NSArray {
+                            let statusMessage = self.prepareErrorMessage(tempErrorMessage[0] as? String)
+                            completionHandler(result: nil, error: "\(statusMessage.firstItem)\n\(statusMessage.secondItem)")
+                        } else if let tempNothing: Dictionary<String, AnyObject> = jsonResult![Constants.SUCCESS_NO_DATA] as? Dictionary<String, AnyObject> {
+                            print(tempNothing)
+                            completionHandler(result: jsonResult, error: nil)
+                        } else {
+                            completionHandler(result: jsonResult, error: nil)
+                        }
                     } else {
-                        completionHandler(result: jsonResult, error: nil)
+                        completionHandler(result: [Constants.EMPTY_STRING: Constants.EMPTY_STRING], error: nil)
                     }
                 } catch let error as NSError {
                     completionHandler(result: nil, error: error.localizedDescription)

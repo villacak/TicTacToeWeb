@@ -62,14 +62,11 @@ class GameViewController: UIViewController {
         self.title = Constants.GAME_TITLE
         hideSpinner()
         
-        // check if exist a game or create a new
+        // clear all previous games form this user and check if exist a game to enroll or create a new
         clearGames()
-//        createOrGetGame()
         
-        
-        // Do any additional setup after loading the view.
     }
-
+    
     
     //
     // when user tap in a position
@@ -82,17 +79,17 @@ class GameViewController: UIViewController {
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
             prepareForTheOtherUserPlay()
         }
-    
+        
     }
-
-  
+    
+    
     //
     // Set image in the button
     //
     func setImageForSpot(spot: Int, played: Bool, selection: String) {
         let playerMark = (selection == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
         let image: UIImage = UIImage(named: playerMark)!
-
+        
         switch spot {
         case 1:
             pos1.setImage(image, forState: UIControlState.Normal)
@@ -126,7 +123,7 @@ class GameViewController: UIViewController {
             
         }
     }
-
+    
     
     //
     // Hide spinner
@@ -137,7 +134,7 @@ class GameViewController: UIViewController {
         
     }
     
-
+    
     //
     // Prepare for check if the other player has played
     //
@@ -154,21 +151,25 @@ class GameViewController: UIViewController {
     //
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
-        jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY, controller: self, completionHandler: { (result, errorString) -> Void in
+        jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             self.hideSpinner()
             self.enableBoard()
             if let errorMessage = errorString  {
-                self.errorCounter++
-                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                if self.errorCounter > 3 {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.errorCounter++
+                    Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage + "\n It will retry \(3 - self.errorCounter) time(s)", controller: self)
+                    if self.errorCounter > 3 { // the service can fail for 3 times before we cancel
+                        self.poolingForCheck.invalidate()
+                        self.errorCounter = 0
+                        self.dismissTheView()
+                    }
+                })
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
                     self.poolingForCheck.invalidate()
                     self.errorCounter = 0
-                    self.dismissTheView()
-                }
-            } else {
-                self.poolingForCheck.invalidate()
-                self.errorCounter = 0
-                self.chekResponse(result!)
+                    self.chekResponse(result!)
+                })
             }
             self.poolingForCheck.invalidate()
             self.hideSpinner()
@@ -186,7 +187,9 @@ class GameViewController: UIViewController {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
                 self.dismissTheView()
             } else {
-                self.createOrGetGame()
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.createOrGetGame()
+                })
             }
         })
     }
@@ -202,11 +205,15 @@ class GameViewController: UIViewController {
                 Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
                 self.dismissTheView()
             } else {
-                let game: Game = result!;
-                Settings.updateGame(game.game!)
-                Settings.updateSelection(game.playerXOrO!)
-                Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: "X always start.\n You are \(Settings.getSelection())", controller: self)
-                self.playerSelection = Settings.getSelection()
+                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+                    let game: Game = result!;
+                    Settings.updateGame(game.game!)
+                    Settings.updateSelection(game.playerXOrO!)
+                    dispatch_async(dispatch_get_main_queue(), {
+                        Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: "Your automatic selection is \(Settings.getSelection().uppercaseString)", controller: self)
+                        self.playerSelection = Settings.getSelection()
+                    })
+                })
             }
         })
     }

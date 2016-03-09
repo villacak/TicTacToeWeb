@@ -74,9 +74,9 @@ class Constants: NSObject {
     
     // Options
     static let SELECTION: String = "selection"
-    static let X: String = "x"
+    static let X: String = "X"
     static let X_IMAGE: String = "x_image"
-    static let O: String = "o"
+    static let O: String = "O"
     static let O_IMAGE: String = "o_image"
     
     
@@ -99,7 +99,7 @@ class Constants: NSObject {
     static let STATUS: String = "status"
     static let MESSAGE: String = "message"
     static let INFORMATION: String = "Information"
-    static let DELETE: String = "delete"
+    static let SUCCESS_NO_DATA: String = "success"
     
-    static let POOLING_TIME: NSTimeInterval = 4.0
+    static let POOLING_TIME: NSTimeInterval = 20.0
 }
