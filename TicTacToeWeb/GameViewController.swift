@@ -53,6 +53,8 @@ class GameViewController: UIViewController {
     // Error counter to invalidate the pooling
     var errorCounter: Int = 0
     
+    var trysCounter: Int = 0
+    
     //
     // Load settings when view did load
     //
@@ -166,9 +168,13 @@ class GameViewController: UIViewController {
                 })
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.poolingForCheck.invalidate()
                     self.errorCounter = 0
-                    self.chekResponse(result!)
+                    if self.trysCounter < Constants.MAX_NUMBER_OF_POOLING_CALLS {
+                        self.chekResponse(result!)
+                    } else {
+                        Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
+                        self.dismissTheView()
+                    }
                 })
             }
             self.poolingForCheck.invalidate()
@@ -268,6 +274,19 @@ class GameViewController: UIViewController {
     // Check response
     //
     func chekResponse(result: Game) {
-        
+        if (result.playerXOrO != Settings.getSelection()) {
+            self.poolingForCheck.invalidate()
+            let lastPlace: Int = (result.plays?.count)!
+            if lastPlace > 0 {
+                let lastPlay: Play = result.plays![lastPlace]
+                if buttonTouched[lastPlay.position!] == true {
+                    trysCounter++
+                } else {
+                    setImageForSpot(lastPlay.position!, played: false, selection: result.playerXOrO!)
+                }
+            }
+        } else {
+            trysCounter++
+        }
     }
 }
