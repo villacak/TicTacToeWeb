@@ -274,7 +274,7 @@ class GameViewController: UIViewController {
     // Check response
     //
     func chekResponse(result: Game) {
-        if (result.playerXOrO != Settings.getSelection()) {
+        if (result.playerXOrO != nil && result.plays != nil && result.playerXOrO != Settings.getSelection()) {
             self.poolingForCheck.invalidate()
             let lastPlace: Int = (result.plays?.count)!
             if lastPlace > 0 {
@@ -287,6 +287,7 @@ class GameViewController: UIViewController {
             }
         } else {
             trysCounter++
+            print(trysCounter)
         }
     }
 }
