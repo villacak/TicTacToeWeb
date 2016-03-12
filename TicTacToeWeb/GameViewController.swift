@@ -144,7 +144,12 @@ class GameViewController: UIViewController {
         spinner.startAnimating()
         spinnerText.hidden = false
         disableBoard()
-        poolingForCheck = NSTimer.scheduledTimerWithTimeInterval(Constants.POOLING_TIME, target: self, selector: Selector(Constants.CHECK_OTHER_PLAYER), userInfo: nil, repeats: true)
+        poolingForCheck?.invalidate()
+        poolingForCheck = NSTimer.scheduledTimerWithTimeInterval(Constants.POOLING_TIME,
+            target: self,
+            selector: Selector(Constants.CHECK_OTHER_PLAYER),
+            userInfo: nil,
+            repeats: true)
     }
     
     
@@ -169,7 +174,7 @@ class GameViewController: UIViewController {
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.errorCounter = 0
-                    if self.trysCounter < Constants.MAX_NUMBER_OF_POOLING_CALLS {
+                    if self.trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS {
                         self.chekResponse(result!)
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
@@ -177,7 +182,6 @@ class GameViewController: UIViewController {
                     }
                 })
             }
-            self.poolingForCheck.invalidate()
             self.hideSpinner()
         })
     }
@@ -273,21 +277,27 @@ class GameViewController: UIViewController {
     //
     // Check response
     //
-    func chekResponse(result: Game) {
-        if (result.playerXOrO != nil && result.plays != nil && result.playerXOrO != Settings.getSelection()) {
+    func chekResponse(gameForCheck: Game) {
+        if (gameForCheck.playerXOrO != nil && gameForCheck.plays != nil && gameForCheck.playerXOrO != Settings.getSelection()) {
             self.poolingForCheck.invalidate()
-            let lastPlace: Int = (result.plays?.count)!
+            let lastPlace: Int = (gameForCheck.plays?.count)!
             if lastPlace > 0 {
-                let lastPlay: Play = result.plays![lastPlace]
+                let lastPlay: Play = gameForCheck.plays![lastPlace]
                 if buttonTouched[lastPlay.position!] == true {
                     trysCounter++
                 } else {
-                    setImageForSpot(lastPlay.position!, played: false, selection: result.playerXOrO!)
+                    setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
                 }
             }
         } else {
-            trysCounter++
-            print(trysCounter)
+            if (trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS) {
+                trysCounter++
+            } else {
+                trysCounter = 0
+                poolingForCheck?.invalidate()
+                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
+                dismissTheView()
+            }
         }
     }
 }
