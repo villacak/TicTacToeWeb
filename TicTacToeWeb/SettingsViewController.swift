@@ -53,7 +53,15 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     //
     @IBAction func newUserAction(sender: AnyObject) {
         view.endEditing(true)
-        callUpdateUser(userName.text! as String)
+        if let tempUserName = userName.text where ((userName.text?.isEmpty) != nil) {
+            if (tempUserName != Constants.EMPTY_STRING) {
+                callUpdateUser(tempUserName as String)
+            } else {
+                Dialog().okDismissAlert(titleStr: Constants.USER_ERROR, messageStr: Constants.USER_EMPTY, controller: self)
+            }
+        } else {
+            Dialog().okDismissAlert(titleStr: Constants.USER_ERROR, messageStr: Constants.USER_EMPTY, controller: self)
+        }
     }
 
     
@@ -123,6 +131,8 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 if (trimName == result?.userName) {
                     Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.SUCESS_CREATED_USER, controller: self)
                     Settings.updateUser(trimName)
+                } else {
+                    Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.FAIL_CREATE_USER, controller: self)
                 }
             }
             self.initialSettings()

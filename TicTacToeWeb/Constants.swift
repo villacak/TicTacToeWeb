@@ -12,8 +12,8 @@ import Foundation
 class Constants: NSObject {
 
     // Base URL
-//    static let URL_BASE: String = "http://ec2-52-26-42-218.us-west-2.compute.amazonaws.com:8080"
-    static let URL_BASE: String = "http://localhost:8080/server/rest"
+    static let URL_BASE: String = "http://ec2-52-37-248-139.us-west-2.compute.amazonaws.com:8080/server/rest"
+//    static let URL_BASE: String = "http://localhost:8080/server/rest"
     
     
     // Endpoints
@@ -91,10 +91,13 @@ class Constants: NSObject {
     // Dialog titles and messages
     static let SUCCESS_TITLE: String = "Success"
     static let ERROR_TITLE: String = "Response Error"
+    static let USER_ERROR: String = "User Error"
     static let GAME_TITLE: String = "Game"
     static let STATS_TITLE: String = "Stats"
     static let SETTINGS_TITLE: String = "Settings"    
     static let SUCESS_CREATED_USER: String = "Success created new user"
+    static let FAIL_CREATE_USER: String = "Fail to create user"
+    static let USER_EMPTY: String = "User name cannot be empty"
     static let ERROR_TO_RETURN: String = "ErrorToReturn"
     static let STATUS: String = "status"
     static let MESSAGE: String = "message"

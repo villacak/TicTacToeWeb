@@ -50,6 +50,18 @@
                 <true/>
             </dict>
         </dict>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>ec2-52-37-248-139.us-west-2.compute.amazonaws.com</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <true/>
+                <key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+            </dict>
+        </dict>
     </dict>
 </dict>
 </plist>
