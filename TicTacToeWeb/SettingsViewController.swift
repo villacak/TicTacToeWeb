@@ -21,13 +21,13 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.title = Constants.SETTINGS_TITLE
         
         userName.delegate = self
         initialSettings()
     }
-
+    
     //
     // Initial settings for settings view
     //
@@ -63,7 +63,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
             Dialog().okDismissAlert(titleStr: Constants.USER_ERROR, messageStr: Constants.USER_EMPTY, controller: self)
         }
     }
-
+    
     
     //
     // Reset User action
@@ -76,7 +76,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         initialSettings()
     }
     
-
+    
     //
     // Reset Scores action
     //
@@ -124,20 +124,22 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         )
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForUserServices(name: trimName, method: Constants.PUT_METHOD, service: Constants.USER_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                self.userName.becomeFirstResponder()
-            } else {
-                if (trimName == result?.userName) {
-                    Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.SUCESS_CREATED_USER, controller: self)
-                    Settings.updateUser(trimName)
+            dispatch_async(dispatch_get_main_queue(), {
+                if let errorMessage = errorString  {
+                    Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                    self.userName.becomeFirstResponder()
                 } else {
-                    Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.FAIL_CREATE_USER, controller: self)
+                    if (trimName == result?.userName) {
+                        Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.SUCESS_CREATED_USER, controller: self)
+                        Settings.updateUser(trimName)
+                    } else {
+                        Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.FAIL_CREATE_USER, controller: self)
+                    }
                 }
-            }
-            self.initialSettings()
+                self.initialSettings()
+            })
         })
     }
-
+    
     
 }
