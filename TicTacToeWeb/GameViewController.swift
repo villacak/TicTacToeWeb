@@ -65,15 +65,23 @@ class GameViewController: UIViewController {
         hideSpinner()
         
         // clear all previous games form this user and check if exist a game to enroll or create a new
-        clearGames()
+        clearGames(false)
         
     }
     
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(true)
-        clearGames()
+    override func willMoveToParentViewController(parent: UIViewController?) {
+        super.willMoveToParentViewController(parent)
+        if parent == nil {
+            clearGames(true);
+            print("The back button was pressed.")
+        }
     }
+
+    
+//    override func viewWillDisappear(animated: Bool) {
+//        super.viewWillDisappear(true)
+//        clearGames()
+//    }
     
     
     //
@@ -196,7 +204,7 @@ class GameViewController: UIViewController {
     //
     // Clear all games from the actual user
     //
-    func clearGames() {
+    func clearGames(isJustClean: Bool) {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForFinalizeGameService(name: Settings.getUser(), method: Constants.GET_METHOD, service: Constants.GAME_FINALIZE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             if let errorMessage = errorString  {
@@ -204,7 +212,9 @@ class GameViewController: UIViewController {
                 self.dismissTheView()
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.createOrGetGame()
+                    if !isJustClean {
+                        self.createOrGetGame()
+                    }
                 })
             }
         })
@@ -226,8 +236,8 @@ class GameViewController: UIViewController {
                     Settings.updateGame(game.game!)
                     Settings.updateSelection(game.playerXOrO!)
                     dispatch_async(dispatch_get_main_queue(), {
-                        Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: "Your automatic selection is \(Settings.getSelection().uppercaseString)", controller: self)
                         self.playerSelection = Settings.getSelection()
+                        self.actionsForWhoStartAndDontStart(Settings.getSelection())
                     })
                 })
             }
