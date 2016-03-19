@@ -70,6 +70,12 @@ class GameViewController: UIViewController {
     }
     
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        clearGames()
+    }
+    
+    
     //
     // when user tap in a position
     //
@@ -228,6 +234,19 @@ class GameViewController: UIViewController {
         })
     }
     
+    
+    //
+    // Dialogs for X or O
+    // X will start playing, O will wait for the other make a play
+    //
+    func actionsForWhoStartAndDontStart(selection: String) {
+        if selection == Constants.X {
+            Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: Constants.START_PLAYING, controller: self)
+        } else {
+            Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: Constants.WAIT_FOR_USER_PLAY, controller: self)
+            prepareForTheOtherUserPlay()
+        }
+    }
     
     
     //

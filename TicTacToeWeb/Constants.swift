@@ -103,6 +103,8 @@ class Constants: NSObject {
     static let MESSAGE: String = "message"
     static let INFORMATION: String = "Information"
     static let SUCCESS_NO_DATA: String = "success"
+    static let START_PLAYING: String = "Your automatic selection is X, so you will start playing the game"
+    static let WAIT_FOR_USER_PLAY: String = "Your automatic selection is O, please wait for the other play make a play"
     static let MAX_TRY_REACHED: String = "The other player seem to have abandoned the game or you lost connection."
     
     static let POOLING_TIME: NSTimeInterval = 5.0
