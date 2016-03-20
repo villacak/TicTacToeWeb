@@ -69,6 +69,9 @@ class GameViewController: UIViewController {
         
     }
     
+    //
+    // Call clearGames when the user leave the view
+    //
     override func willMoveToParentViewController(parent: UIViewController?) {
         super.willMoveToParentViewController(parent)
         if parent == nil {
@@ -76,12 +79,6 @@ class GameViewController: UIViewController {
             print("The back button was pressed.")
         }
     }
-
-    
-//    override func viewWillDisappear(animated: Bool) {
-//        super.viewWillDisappear(true)
-//        clearGames()
-//    }
     
     
     //
@@ -92,7 +89,11 @@ class GameViewController: UIViewController {
             buttonTouched[sender.tag] = true
             lastPlayed = true
             playerPosition = "\(sender.tag)"
+            if playerPosition == nil {
+                playerPosition = Constants.EMPTY_STRING
+            }
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
+            setPlay()
             prepareForTheOtherUserPlay()
         }
         
@@ -168,22 +169,40 @@ class GameViewController: UIViewController {
     
     
     //
+    // Persist the play into the server
+    //
+    func setPlay() {
+        let jsonUtils: JSONUtils = JSONUtils()
+        jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
+            if let errorMessage = errorString  {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.errorTryCounter(errorMessage)
+                })
+            } else {
+                dispatch_async(dispatch_get_main_queue(), {
+                    self.errorCounter = 0
+                    if self.trysCounter == Constants.MAX_NUMBER_OF_POOLING_CALLS {
+                        Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
+                        self.dismissTheView()
+                    }
+                })
+            }
+        })
+
+    }
+    
+    
+    //
     // Call the check game service
     //
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
-        jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
+        jsonUtils.callRequestForCheckGameService(game: "\(Settings.getGame())", method: Constants.GET_METHOD, service: Constants.GAME_CHECK_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             self.hideSpinner()
             self.enableBoard()
             if let errorMessage = errorString  {
                 dispatch_async(dispatch_get_main_queue(), {
-                    self.errorCounter++
-                    Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage + "\n It will retry \(3 - self.errorCounter) time(s)", controller: self)
-                    if self.errorCounter > 3 { // the service can fail for 3 times before we cancel
-                        self.poolingForCheck.invalidate()
-                        self.errorCounter = 0
-                        self.dismissTheView()
-                    }
+                    self.errorTryCounter(errorMessage)
                 })
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
@@ -198,6 +217,20 @@ class GameViewController: UIViewController {
             }
             self.hideSpinner()
         })
+    }
+    
+    
+    //
+    // Error tried counter
+    //
+    func errorTryCounter(errorMessage: String) {
+        self.errorCounter++
+        Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage + "\n It will retry \(3 - self.errorCounter) time(s)", controller: self)
+        if self.errorCounter > 3 { // the service can fail for 3 times before we cancel
+            self.poolingForCheck.invalidate()
+            self.errorCounter = 0
+            self.dismissTheView()
+        }
     }
     
     

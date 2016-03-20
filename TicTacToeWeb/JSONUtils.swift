@@ -92,6 +92,35 @@ class JSONUtils: NSObject {
 
     
     //
+    // Call games services Check and return the JSON parsed
+    //
+    func callRequestForCheckGameService(game game: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
+        
+        let urlHelper: UrlHelper = UrlHelper()
+        let urlUserCreate: String = urlHelper.populateGamePlayOrCheck(game: game, selection:
+            Constants.EMPTY_STRING, position: Constants.EMPTY_STRING, service: service)
+        let request: Requests = Requests()
+        
+        var responseAsNSDictinory: Dictionary<String, AnyObject>!
+        request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
+            if (result != nil) {
+                responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
+                if let errorMessage = errorString  {
+                    completionHandler(result: nil, errorString: errorMessage)
+                } else {
+                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory, loadRelationship: true)
+                    completionHandler(result: game, errorString: nil)
+                }
+            } else {
+                // If success returns nil then it's necessary display an alert to the user
+                completionHandler(result: nil, errorString: errorString)
+            }
+        })
+    }
+
+    
+    
+    //
     // Call games service Finalize and return the JSON parsed
     //
     func callRequestForFinalizeGameService(name name: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
@@ -117,6 +146,8 @@ class JSONUtils: NSObject {
         })
     }
 
+    
+    
     
     //
     // Parse from Dictionary to User

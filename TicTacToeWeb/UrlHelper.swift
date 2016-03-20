@@ -45,7 +45,12 @@ class UrlHelper: NSObject {
     //
     func populateGamePlayOrCheck(game game: String, selection: String, position: String, service: String) -> String {
         var urlToReturn: String!
-        let params: [String: String] = ["game" : game, "selection" : selection, "position" : position]
+        var params: [String: String]!
+        if (selection != Constants.EMPTY_STRING && position != Constants.EMPTY_STRING) {
+            params = ["game" : game, "selection" : selection, "position" : position]
+        } else {
+            params = ["game" : game]
+        }
         let encodedParams: String = encodeParameters(params: params)
         if service == Constants.GAME_PLAY_SERVICE {
             urlToReturn = "\(Constants.URL_BASE)\(Constants.GAME_PLAY)\(encodedParams)"
