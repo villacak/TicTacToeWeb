@@ -94,7 +94,7 @@ class JSONUtils: NSObject {
     //
     // Call games services Check and return the JSON parsed
     //
-    func callRequestForCheckGameService(game game: String, method: String, service: String, controller: UIViewController, completionHandler:(result: Game?, errorString: String?) -> Void) {
+    func callRequestForCheckGameService(game game: String, method: String, service: String, controller: UIViewController, completionHandler:(result: CheckGame?, errorString: String?) -> Void) {
         
         let urlHelper: UrlHelper = UrlHelper()
         let urlUserCreate: String = urlHelper.populateGamePlayOrCheck(game: game, selection:
@@ -108,8 +108,8 @@ class JSONUtils: NSObject {
                 if let errorMessage = errorString  {
                     completionHandler(result: nil, errorString: errorMessage)
                 } else {
-                    let game: Game = self.parseDictionaryToGame(responseAsNSDictinory, loadRelationship: true)
-                    completionHandler(result: game, errorString: nil)
+                    let checkGame: CheckGame = self.parseDictionaryToCheckGame(responseAsNSDictinory, loadRelationship: true)
+                    completionHandler(result: checkGame, errorString: nil)
                 }
             } else {
                 // If success returns nil then it's necessary display an alert to the user
@@ -222,4 +222,19 @@ class JSONUtils: NSObject {
         play.position = dictionaryResponse[Constants.POSITON] as? Int
         return play
     }
+    
+    
+    //
+    // Parse from Dictionary to CheckGame
+    //
+    func parseDictionaryToCheckGame(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> CheckGame {
+        var checkGame: CheckGame = CheckGame()
+        checkGame.playNumber = dictionaryResponse[Constants.PLAY_NUMBER] as? Int
+        if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAME] as? Dictionary<String, AnyObject> {
+            checkGame.game = parseDictionaryToGame(tempGame, loadRelationship: false)
+        }
+        checkGame.winner = dictionaryResponse[Constants.WINNER] as? Bool
+        return checkGame
+    }
+    
 }

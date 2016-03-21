@@ -92,8 +92,12 @@ class GameViewController: UIViewController {
             if playerPosition == nil {
                 playerPosition = Constants.EMPTY_STRING
             }
+            if playerSelection == nil {
+                playerSelection = Constants.EMPTY_STRING
+            }
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
             setPlay()
+//            checkForWinner()
             prepareForTheOtherUserPlay()
         }
         
@@ -188,7 +192,6 @@ class GameViewController: UIViewController {
                 })
             }
         })
-
     }
     
     
@@ -339,17 +342,39 @@ class GameViewController: UIViewController {
     //
     // Check response
     //
-    func chekResponse(gameForCheck: Game) {
+    func chekResponse(gameChecked: CheckGame) {
+        let gameForCheck: Game = gameChecked.game!
+        
         if (gameForCheck.playerXOrO != nil && gameForCheck.plays != nil && gameForCheck.playerXOrO != Settings.getSelection()) {
-            self.poolingForCheck.invalidate()
-            let lastPlace: Int = (gameForCheck.plays?.count)!
-            if lastPlace > 0 {
-                let lastPlay: Play = gameForCheck.plays![lastPlace]
-                if buttonTouched[lastPlay.position!] == true {
-                    trysCounter++
-                } else {
-                    setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
+            // The check has to check for the other player play not the device player
+            if (gameForCheck.playerXOrO != Settings.getSelection()) {
+                self.poolingForCheck.invalidate()
+                let lastPlace: Int = (gameForCheck.plays?.count)!
+                if lastPlace > 0 {
+                    let lastPlay: Play = gameForCheck.plays![lastPlace]
+                    if buttonTouched[lastPlay.position!] == true {
+                        trysCounter++
+                    } else {
+                        setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
+                    }
                 }
+            }
+            
+            if (gameChecked.winner == true && gameForCheck.playerXOrO != Settings.getSelection()) {
+                // Other player has won
+                Dialog().okDismissAlert(titleStr: Constants.LOSER_TITLE, messageStr: Constants.LOSER_TEXT, controller: self)
+                Settings.updateLoses()
+                disableBoard()
+            } else if (gameChecked.winner == true && gameForCheck.playerXOrO != Settings.getSelection()) {
+                // This player has won
+                Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
+                Settings.updateWins()
+                disableBoard()
+            } else if (gameChecked.winner == false && gameForCheck.plays?.count == Constants.MAX_NUMBER_OF_PLAY) {
+                // Draw game
+                Dialog().okDismissAlert(titleStr: Constants.DRAW_TITLE, messageStr: Constants.DRAW_TEXT, controller: self)
+                Settings.updateDraws()
+                disableBoard()
             }
         } else {
             if (trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS) {
@@ -362,4 +387,13 @@ class GameViewController: UIViewController {
             }
         }
     }
+    
+    
+    //
+    // Check for winner, just in this device
+    //
+    func checkForWinner() {
+       
+    }
+    
 }

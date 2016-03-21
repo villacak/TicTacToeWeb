@@ -132,6 +132,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                     if (trimName == result?.userName) {
                         Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.SUCESS_CREATED_USER, controller: self)
                         Settings.updateUser(trimName)
+                        if let tempIdUser = result?.iduser {
+                            Settings.updateIdUser(tempIdUser)
+                        }
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.FAIL_CREATE_USER, controller: self)
                     }

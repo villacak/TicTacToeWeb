@@ -72,6 +72,10 @@ class Constants: NSObject {
     static let PLAY_ID: String = "playid"
     static let POSITON: String = "position"
     
+    // CheckGame
+    static let PLAY_NUMBER: String = "playNumber"
+    static let WINNER: String = "winner"
+    
     // Options
     static let SELECTION: String = "selection"
     static let X: String = "X"
@@ -87,8 +91,14 @@ class Constants: NSObject {
     
     // Function name for pooling
     static let CHECK_OTHER_PLAYER: String = "poolingCheck"
-
+    
     // Dialog titles and messages
+    static let WINNER_TITLE: String = "You WON"
+    static let WINNER_TEXT: String = "Congratulations for the victory.\n Press Ok and then go back to the main menu for more."
+    static let LOSER_TITLE: String = "You LOST"
+    static let LOSER_TEXT: String = "You have lost this game.\n Press Ok and then go back to the main menu for more."
+    static let DRAW_TITLE: String = "Draw Game"
+    static let DRAW_TEXT: String = "Game has ended in draw.\n Press Ok and then go back to the main menu for more."
     static let SUCCESS_TITLE: String = "Success"
     static let ERROR_TITLE: String = "Response Error"
     static let USER_ERROR: String = "User Error"
@@ -109,4 +119,5 @@ class Constants: NSObject {
     
     static let POOLING_TIME: NSTimeInterval = 5.0
     static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10
+    static let MAX_NUMBER_OF_PLAY: Int = 9
 }

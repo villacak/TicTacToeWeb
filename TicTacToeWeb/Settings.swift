@@ -174,4 +174,20 @@ class Settings: NSObject {
         return selection
     }
 
+    
+    //
+    // IdUser get and set
+    //
+    static func updateIdUser(idUser: Int) {
+        defaults.setObject(idUser, forKey: Constants.ID_USER)
+    }
+    
+    static func getIdUser() -> Int {
+        var idUser: Int = 0
+        if let tempIdUser: Int = defaults.integerForKey(Constants.ID_USER) {
+            idUser = tempIdUser
+        }
+        return idUser
+    }
+
 }
