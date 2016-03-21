@@ -12,7 +12,7 @@ import Foundation
 class Constants: NSObject {
 
     // Base URL
-    static let URL_BASE: String = "http://ec2-52-37-248-139.us-west-2.compute.amazonaws.com:8080/server/rest"
+    static let URL_BASE: String = ""
 //    static let URL_BASE: String = "http://localhost:8080/server/rest"
     
     
@@ -120,4 +120,5 @@ class Constants: NSObject {
     static let POOLING_TIME: NSTimeInterval = 5.0
     static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10
     static let MAX_NUMBER_OF_PLAY: Int = 9
+    static let MINIMUM_PLAYS_FOR_CHECK: Int = 5
 }

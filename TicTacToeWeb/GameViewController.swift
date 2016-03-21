@@ -211,7 +211,11 @@ class GameViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.errorCounter = 0
                     if self.trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS {
-                        self.chekResponse(result!)
+                        if let tempPlays = result?.game?.plays {
+                            if tempPlays.count >= Constants.MINIMUM_PLAYS_FOR_CHECK {
+                                self.chekResponse(result!)
+                            }
+                        }
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
                         self.dismissTheView()
@@ -345,7 +349,8 @@ class GameViewController: UIViewController {
     func chekResponse(gameChecked: CheckGame) {
         let gameForCheck: Game = gameChecked.game!
         
-        if (gameForCheck.playerXOrO != nil && gameForCheck.plays != nil && gameForCheck.playerXOrO != Settings.getSelection()) {
+        if ((gameChecked.playNumber != nil || gameChecked.playNumber > 0) &&
+            (gameForCheck.playerXOrO != nil && gameForCheck.playerXOrO != Constants.EMPTY_STRING && gameForCheck.playerXOrO != Settings.getSelection())) {
             // The check has to check for the other player play not the device player
             if (gameForCheck.playerXOrO != Settings.getSelection()) {
                 self.poolingForCheck.invalidate()
