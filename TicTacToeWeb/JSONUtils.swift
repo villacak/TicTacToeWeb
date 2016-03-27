@@ -62,7 +62,7 @@ class JSONUtils: NSObject {
             }
         })
     }
-   
+    
     
     //
     // Call games services Play and Check and return the JSON parsed
@@ -89,7 +89,7 @@ class JSONUtils: NSObject {
             }
         })
     }
-
+    
     
     //
     // Call games services Check and return the JSON parsed
@@ -105,19 +105,23 @@ class JSONUtils: NSObject {
         request.request(urlToCall: urlUserCreate, method: method , controller: controller, completionHandler: { (result, errorString) -> Void in
             if (result != nil) {
                 responseAsNSDictinory = (result as NSDictionary) as! Dictionary<String, AnyObject>
-                if let errorMessage = errorString  {
-                    completionHandler(result: nil, errorString: errorMessage)
-                } else {
-                    let checkGame: CheckGame = self.parseDictionaryToCheckGame(responseAsNSDictinory, loadRelationship: true)
-                    completionHandler(result: checkGame, errorString: nil)
-                }
+                dispatch_async(dispatch_get_main_queue(), {
+                    if let errorMessage = errorString  {
+                        completionHandler(result: nil, errorString: errorMessage)
+                    } else {
+                        let checkGame: CheckGame = self.parseDictionaryToCheckGame(responseAsNSDictinory, loadRelationship: true)
+                        completionHandler(result: checkGame, errorString: nil)
+                    }
+                })
             } else {
-                // If success returns nil then it's necessary display an alert to the user
-                completionHandler(result: nil, errorString: errorString)
+                dispatch_async(dispatch_get_main_queue(), {
+                    // If success returns nil then it's necessary display an alert to the user
+                    completionHandler(result: nil, errorString: errorString)
+                })
             }
         })
     }
-
+    
     
     
     //
@@ -145,7 +149,7 @@ class JSONUtils: NSObject {
             }
         })
     }
-
+    
     
     
     
@@ -190,7 +194,7 @@ class JSONUtils: NSObject {
         var game: Game = Game()
         if (loadRelationship) {
             if let tempUser: Dictionary<String, AnyObject> = dictionaryResponse[Constants.USER] as? Dictionary<String, AnyObject> {
-                game.user = parseDictionaryToUser(tempUser, loadRelationship: false)
+                game.user = parseDictionaryToUser(tempUser, loadRelationship: loadRelationship)
             }
         } else {
             game.user = nil
@@ -230,8 +234,8 @@ class JSONUtils: NSObject {
     func parseDictionaryToCheckGame(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> CheckGame {
         var checkGame: CheckGame = CheckGame()
         checkGame.playNumber = dictionaryResponse[Constants.PLAY_NUMBER] as? Int
-        if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAME] as? Dictionary<String, AnyObject> {
-            checkGame.game = parseDictionaryToGame(tempGame, loadRelationship: false)
+        if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAMES_ENTITY] as? Dictionary<String, AnyObject> {
+            checkGame.game = parseDictionaryToGame(tempGame, loadRelationship: loadRelationship)
         }
         checkGame.winner = dictionaryResponse[Constants.WINNER] as? Bool
         return checkGame

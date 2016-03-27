@@ -75,6 +75,7 @@ class Constants: NSObject {
     // CheckGame
     static let PLAY_NUMBER: String = "playNumber"
     static let WINNER: String = "winner"
+    static let GAMES_ENTITY: String = "gamesEntity"
     
     // Options
     static let SELECTION: String = "selection"
@@ -117,7 +118,7 @@ class Constants: NSObject {
     static let WAIT_FOR_USER_PLAY: String = "Your automatic selection is O, please wait for the other play make a play"
     static let MAX_TRY_REACHED: String = "The other player seem to have abandoned the game or you lost connection."
     
-    static let POOLING_TIME: NSTimeInterval = 5.0
+    static let POOLING_TIME: NSTimeInterval = 15.0
     static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10
     static let MAX_NUMBER_OF_PLAY: Int = 9
     static let MINIMUM_PLAYS_FOR_CHECK: Int = 5

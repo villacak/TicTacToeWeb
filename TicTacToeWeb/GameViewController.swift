@@ -97,7 +97,6 @@ class GameViewController: UIViewController {
             }
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
             setPlay()
-//            checkForWinner()
             prepareForTheOtherUserPlay()
         }
         
@@ -211,10 +210,8 @@ class GameViewController: UIViewController {
                 dispatch_async(dispatch_get_main_queue(), {
                     self.errorCounter = 0
                     if self.trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS {
-                        if let tempPlays = result?.game?.plays {
-                            if tempPlays.count >= Constants.MINIMUM_PLAYS_FOR_CHECK {
-                                self.chekResponse(result!)
-                            }
+                        if let _ = result?.game?.plays {
+                            self.chekResponse(result!)
                         }
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
@@ -231,7 +228,7 @@ class GameViewController: UIViewController {
     // Error tried counter
     //
     func errorTryCounter(errorMessage: String) {
-        self.errorCounter++
+        self.errorCounter += 1
         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage + "\n It will retry \(3 - self.errorCounter) time(s)", controller: self)
         if self.errorCounter > 3 { // the service can fail for 3 times before we cancel
             self.poolingForCheck.invalidate()
@@ -358,7 +355,7 @@ class GameViewController: UIViewController {
                 if lastPlace > 0 {
                     let lastPlay: Play = gameForCheck.plays![lastPlace]
                     if buttonTouched[lastPlay.position!] == true {
-                        trysCounter++
+                        trysCounter += 1
                     } else {
                         setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
                     }
@@ -383,7 +380,7 @@ class GameViewController: UIViewController {
             }
         } else {
             if (trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS) {
-                trysCounter++
+                trysCounter += 1
             } else {
                 trysCounter = 0
                 poolingForCheck?.invalidate()
