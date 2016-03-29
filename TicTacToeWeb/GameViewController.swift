@@ -353,7 +353,7 @@ class GameViewController: UIViewController {
                 self.poolingForCheck.invalidate()
                 let lastPlace: Int = (gameForCheck.plays?.count)!
                 if lastPlace > 0 {
-                    let lastPlay: Play = gameForCheck.plays![lastPlace]
+                    let lastPlay: Play = gameForCheck.plays![lastPlace - 1]
                     if buttonTouched[lastPlay.position!] == true {
                         trysCounter += 1
                     } else {

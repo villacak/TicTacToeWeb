@@ -71,6 +71,7 @@ class Constants: NSObject {
     // Play
     static let PLAY_ID: String = "playid"
     static let POSITON: String = "position"
+    static let USER_ID: String = "userId"
     
     // CheckGame
     static let PLAY_NUMBER: String = "playNumber"

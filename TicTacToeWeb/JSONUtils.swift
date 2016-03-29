@@ -109,7 +109,7 @@ class JSONUtils: NSObject {
                     if let errorMessage = errorString  {
                         completionHandler(result: nil, errorString: errorMessage)
                     } else {
-                        let checkGame: CheckGame = self.parseDictionaryToCheckGame(responseAsNSDictinory, loadRelationship: true)
+                        let checkGame: CheckGame = self.parseDictionaryToCheckGame(responseAsNSDictinory)
                         completionHandler(result: checkGame, errorString: nil)
                     }
                 })
@@ -196,11 +196,15 @@ class JSONUtils: NSObject {
             if let tempUser: Dictionary<String, AnyObject> = dictionaryResponse[Constants.USER] as? Dictionary<String, AnyObject> {
                 game.user = parseDictionaryToUser(tempUser, loadRelationship: loadRelationship)
             }
+//            if let playsDic: Dictionary<String, AnyObject> = dictionaryResponse[Constants.PLAYS] as? Dictionary<String, AnyObject> {
+//                game.plays = getPlays(playsDic)
+//            }
         } else {
+            game.plays = nil
             game.user = nil
         }
         
-        game.plays = dictionaryResponse[Constants.PLAYS] as? [Play]
+        
         game.idgames = dictionaryResponse[Constants.ID_GAMES] as? Int
         game.game = dictionaryResponse[Constants.GAME] as? Int
         game.playerXOrO = dictionaryResponse[Constants.PLAYER_X_OR_O] as? String
@@ -211,19 +215,54 @@ class JSONUtils: NSObject {
     
     
     //
+    // Parse for game, with first level relationship
+    //
+    func parseDictionaryToGameRelationshipFirstLevel(dictionaryResponse: Dictionary<String, AnyObject>) -> Game {
+        var game: Game = Game()
+        print(dictionaryResponse)
+        if let tempUser: Dictionary<String, AnyObject> = dictionaryResponse[Constants.USER] as? Dictionary<String, AnyObject> {
+            game.user = parseDictionaryToUser(tempUser, loadRelationship: false)
+        }
+        if let playsDic: NSArray = dictionaryResponse[Constants.PLAYS] as? NSArray {
+            game.plays = getPlays(playsDic)
+        }
+        print(dictionaryResponse["plays"])
+        game.idgames = dictionaryResponse[Constants.ID_GAMES] as? Int
+        game.game = dictionaryResponse[Constants.GAME] as? Int
+        game.playerXOrO = dictionaryResponse[Constants.PLAYER_X_OR_O] as? String
+        game.wonXOrY = dictionaryResponse[Constants.WON_X_OR_Y] as? String
+        game.playersNumber = dictionaryResponse[Constants.PLAYERS_NUMBER] as? Int
+        return game
+    }
+    
+    
+    
+    
+    //
+    // Loop through all play dictorany and return an array
+    //
+    func getPlays(arrayResponse: NSArray) -> [Play] {
+        var playsToReturn: [Play] = [Play]()
+        for play in arrayResponse {
+            let singleItemDictionary: Dictionary<String, AnyObject> = (play as? Dictionary<String, AnyObject>)!
+            let play: Play = parseDictionaryToPlay(singleItemDictionary)
+            if let tempPlay: Play = play {
+                playsToReturn.append(tempPlay)
+            }
+        }
+        return playsToReturn
+    }
+    
+    
+    //
     // Parse from Dictionary to Play
     //
-    func parseDictionaryToPlay(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> Play {
+    func parseDictionaryToPlay(dictionaryResponse: Dictionary<String, AnyObject>) -> Play {
         var play: Play = Play()
         play.playid = dictionaryResponse[Constants.PLAY_ID] as? Int
-        if (loadRelationship) {
-            if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAME] as? Dictionary<String, AnyObject> {
-                play.game = parseDictionaryToGame(tempGame, loadRelationship: false)
-            }
-        } else {
-            play.game = nil
-        }
+        play.game = dictionaryResponse[Constants.GAME] as? Int
         play.position = dictionaryResponse[Constants.POSITON] as? Int
+        play.userId = dictionaryResponse[Constants.USER_ID] as? Int
         return play
     }
     
@@ -231,11 +270,11 @@ class JSONUtils: NSObject {
     //
     // Parse from Dictionary to CheckGame
     //
-    func parseDictionaryToCheckGame(dictionaryResponse: Dictionary<String, AnyObject>, loadRelationship: Bool) -> CheckGame {
+    func parseDictionaryToCheckGame(dictionaryResponse: Dictionary<String, AnyObject>) -> CheckGame {
         var checkGame: CheckGame = CheckGame()
         checkGame.playNumber = dictionaryResponse[Constants.PLAY_NUMBER] as? Int
         if let tempGame: Dictionary<String, AnyObject> = dictionaryResponse[Constants.GAMES_ENTITY] as? Dictionary<String, AnyObject> {
-            checkGame.game = parseDictionaryToGame(tempGame, loadRelationship: loadRelationship)
+            checkGame.game = parseDictionaryToGameRelationshipFirstLevel(tempGame)
         }
         checkGame.winner = dictionaryResponse[Constants.WINNER] as? Bool
         return checkGame
