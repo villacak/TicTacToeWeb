@@ -230,7 +230,7 @@ class GameViewController: UIViewController {
     func errorTryCounter(errorMessage: String) {
         self.errorCounter += 1
         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage + "\n It will retry \(3 - self.errorCounter) time(s)", controller: self)
-        if self.errorCounter > 3 { // the service can fail for 3 times before we cancel
+        if self.errorCounter > Constants.MAX_FAIL_ATTEMPTS { // the service can fail for 3 times before we cancel
             self.poolingForCheck.invalidate()
             self.errorCounter = 0
             self.dismissTheView()

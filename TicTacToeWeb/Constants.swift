@@ -120,7 +120,8 @@ class Constants: NSObject {
     static let MAX_TRY_REACHED: String = "The other player seem to have abandoned the game or you lost connection."
     
     static let POOLING_TIME: NSTimeInterval = 15.0
-    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10
+    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10 // trying for 10 times will give 150 seconds, that's 1:30 minutes 
     static let MAX_NUMBER_OF_PLAY: Int = 9
     static let MINIMUM_PLAYS_FOR_CHECK: Int = 5
+    static let MAX_FAIL_ATTEMPTS: Int = 3
 }
