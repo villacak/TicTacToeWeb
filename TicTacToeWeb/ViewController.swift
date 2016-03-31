@@ -25,6 +25,16 @@ class ViewController: UIViewController {
         initialChecks()   
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        if Reachability.isConnectedToNetwork() == false {
+            Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+            playBtn.enabled = false
+            settingsBtn.enabled = false
+        }
+
+    }
+    
     
     //
     // Initial checks for the app

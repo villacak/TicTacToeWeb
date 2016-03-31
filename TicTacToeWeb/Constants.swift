@@ -102,7 +102,7 @@ class Constants: NSObject {
     static let WINNER_TITLE: String = "You WON"
     static let WINNER_TEXT: String = "Congratulations for the victory.\n Press Ok and then go back to the main menu for more."
     static let LOSER_TITLE: String = "You LOST"
-    static let LOSER_TEXT: String = "You have lost this game.\n Press Ok and then go back to the main menu for more."
+    static let LOSER_TEXT: String = "You have lost the game.\n Press Ok and then go back to the main menu for more."
     static let DRAW_TITLE: String = "Draw Game"
     static let DRAW_TEXT: String = "Game has ended in draw.\n Press Ok and then go back to the main menu for more."
     static let SUCCESS_TITLE: String = "Success"
@@ -122,6 +122,8 @@ class Constants: NSObject {
     static let START_PLAYING: String = "Your automatic selection is X, so you will start playing the game"
     static let WAIT_FOR_USER_PLAY: String = "Your automatic selection is O, please wait for the other play make a play"
     static let MAX_TRY_REACHED: String = "The other player seem to have abandoned the game or you lost connection."
+    static let INTERNET_TITLE: String = "Internet"
+    static let NO_INTERNET_CONN: String = "You don't have internet connection, so you can't play, try check your WI-FI and/or your mobile has internet signal"
     
     static let POOLING_TIME: NSTimeInterval = 5.0
     static let MAX_NUMBER_OF_POOLING_CALLS: Int = 18 // trying for 10 times will give 150 seconds, that's 1:30 minutes
