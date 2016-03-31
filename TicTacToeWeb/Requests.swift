@@ -29,8 +29,7 @@ class Requests: NSObject {
                         if let tempErrorMessage: NSArray = jsonResult![Constants.ERROR_TO_RETURN] as? NSArray {
                             let statusMessage = self.prepareErrorMessage(tempErrorMessage[0] as? String)
                             completionHandler(result: nil, error: "\(statusMessage.firstItem)\n\(statusMessage.secondItem)")
-                        } else if let tempNothing: Dictionary<String, AnyObject> = jsonResult![Constants.SUCCESS_NO_DATA] as? Dictionary<String, AnyObject> {
-                            print(tempNothing)
+                        } else if let _: Dictionary<String, AnyObject> = jsonResult![Constants.SUCCESS_NO_DATA] as? Dictionary<String, AnyObject> {
                             completionHandler(result: jsonResult, error: nil)
                         } else {
                             completionHandler(result: jsonResult, error: nil)
@@ -55,13 +54,14 @@ class Requests: NSObject {
     //
     // Prepate error message
     //
-    func prepareErrorMessage(var message: String!) -> (firstItem: String, secondItem: String) {
-        message = message.stringByReplacingOccurrencesOfString("\"", withString: Constants.EMPTY_STRING)
-        message = message.stringByReplacingOccurrencesOfString("{", withString: Constants.EMPTY_STRING)
-        message = message.stringByReplacingOccurrencesOfString("}", withString: Constants.EMPTY_STRING)
-        message = message.stringByReplacingOccurrencesOfString(" ", withString: Constants.EMPTY_STRING)
+    func prepareErrorMessage(message: String!) -> (firstItem: String, secondItem: String) {
+        var msg: String = message
+        msg = msg.stringByReplacingOccurrencesOfString("\"", withString: Constants.EMPTY_STRING)
+        msg = msg.stringByReplacingOccurrencesOfString("{", withString: Constants.EMPTY_STRING)
+        msg = msg.stringByReplacingOccurrencesOfString("}", withString: Constants.EMPTY_STRING)
+        msg = msg.stringByReplacingOccurrencesOfString(" ", withString: Constants.EMPTY_STRING)
         
-        let splitString = message.characters.split{$0 == ","}.map{String($0)}
+        let splitString = msg.characters.split{$0 == ","}.map{String($0)}
         let firstItem: String = splitString[0].stringByReplacingOccurrencesOfString(":", withString: " ")
         let secondItem: String = splitString[1].stringByReplacingOccurrencesOfString(":", withString: " ")
         return (firstItem, secondItem)

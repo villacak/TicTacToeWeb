@@ -219,14 +219,12 @@ class JSONUtils: NSObject {
     //
     func parseDictionaryToGameRelationshipFirstLevel(dictionaryResponse: Dictionary<String, AnyObject>) -> Game {
         var game: Game = Game()
-        print(dictionaryResponse)
         if let tempUser: Dictionary<String, AnyObject> = dictionaryResponse[Constants.USER] as? Dictionary<String, AnyObject> {
             game.user = parseDictionaryToUser(tempUser, loadRelationship: false)
         }
         if let playsDic: NSArray = dictionaryResponse[Constants.PLAYS] as? NSArray {
             game.plays = getPlays(playsDic)
         }
-        print(dictionaryResponse["plays"])
         game.idgames = dictionaryResponse[Constants.ID_GAMES] as? Int
         game.game = dictionaryResponse[Constants.GAME] as? Int
         game.playerXOrO = dictionaryResponse[Constants.PLAYER_X_OR_O] as? String

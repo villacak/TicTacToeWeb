@@ -47,6 +47,10 @@ class Constants: NSObject {
     static let DELETE_METHOD: String = "DELETE"
     
     
+    // String booleans
+    static let TRUE = "true"
+    static let FALSE = "false"
+    
     // Empty String
     static let EMPTY_STRING: String = ""
     
@@ -119,8 +123,8 @@ class Constants: NSObject {
     static let WAIT_FOR_USER_PLAY: String = "Your automatic selection is O, please wait for the other play make a play"
     static let MAX_TRY_REACHED: String = "The other player seem to have abandoned the game or you lost connection."
     
-    static let POOLING_TIME: NSTimeInterval = 15.0
-    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 10 // trying for 10 times will give 150 seconds, that's 1:30 minutes 
+    static let POOLING_TIME: NSTimeInterval = 5.0
+    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 18 // trying for 10 times will give 150 seconds, that's 1:30 minutes
     static let MAX_NUMBER_OF_PLAY: Int = 9
     static let MINIMUM_PLAYS_FOR_CHECK: Int = 5
     static let MAX_FAIL_ATTEMPTS: Int = 3

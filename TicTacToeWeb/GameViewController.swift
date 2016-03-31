@@ -42,7 +42,7 @@ class GameViewController: UIViewController {
     var lastPlayed: Bool = false
     
     // This one will load all button that have been already selected
-    var buttonTouched: [Bool] = [ true, false, false, false, false, false, false, false, false, false ]
+    var buttonTouched: [String] = [ Constants.TRUE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE, Constants.FALSE ]
     
     // For keep calling the services in time intervals
     var poolingForCheck: NSTimer!
@@ -76,7 +76,6 @@ class GameViewController: UIViewController {
         super.willMoveToParentViewController(parent)
         if parent == nil {
             clearGames(true);
-            print("The back button was pressed.")
         }
     }
     
@@ -85,8 +84,7 @@ class GameViewController: UIViewController {
     // when user tap in a position
     //
     @IBAction func UIButtonClicked(sender: UIButton) {
-        if !buttonTouched[sender.tag] {
-            buttonTouched[sender.tag] = true
+        if buttonTouched[sender.tag] == Constants.FALSE {
             lastPlayed = true
             playerPosition = "\(sender.tag)"
             if playerPosition == nil {
@@ -98,6 +96,7 @@ class GameViewController: UIViewController {
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
             setPlay()
             prepareForTheOtherUserPlay()
+            checkIfThisUserWon()
         }
         
     }
@@ -109,6 +108,7 @@ class GameViewController: UIViewController {
     func setImageForSpot(spot: Int, played: Bool, selection: String) {
         let playerMark = (selection == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
         let image: UIImage = UIImage(named: playerMark)!
+        buttonTouched[spot] = playerMark
         
         switch spot {
         case 1:
@@ -146,12 +146,31 @@ class GameViewController: UIViewController {
     
     
     //
+    // Check if the device user has won
+    //
+    func checkIfThisUserWon() {
+        let playerSelection: String = (Settings.getSelection() == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
+        if (buttonTouched[1] == playerSelection && buttonTouched[2] == playerSelection && buttonTouched[3] == playerSelection ||
+            buttonTouched[4] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[6] == playerSelection ||
+            buttonTouched[7] == playerSelection && buttonTouched[8] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[1] == playerSelection && buttonTouched[4] == playerSelection && buttonTouched[7] == playerSelection ||
+            buttonTouched[2] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[8] == playerSelection ||
+            buttonTouched[3] == playerSelection && buttonTouched[6] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[1] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[3] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[7] == playerSelection) {
+            Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
+            Settings.updateWins()
+            disableBoard()
+        }
+    }
+    
+    
+    //
     // Hide spinner
     //
     func hideSpinner() {
         spinner.stopAnimating()
         spinnerText.hidden = true
-        
     }
     
     
@@ -164,10 +183,10 @@ class GameViewController: UIViewController {
         disableBoard()
         poolingForCheck?.invalidate()
         poolingForCheck = NSTimer.scheduledTimerWithTimeInterval(Constants.POOLING_TIME,
-            target: self,
-            selector: Selector(Constants.CHECK_OTHER_PLAYER),
-            userInfo: nil,
-            repeats: true)
+                                                                 target: self,
+                                                                 selector: Selector(Constants.CHECK_OTHER_PLAYER),
+                                                                 userInfo: nil,
+                                                                 repeats: true)
     }
     
     
@@ -200,14 +219,16 @@ class GameViewController: UIViewController {
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForCheckGameService(game: "\(Settings.getGame())", method: Constants.GET_METHOD, service: Constants.GAME_CHECK_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            self.hideSpinner()
-            self.enableBoard()
             if let errorMessage = errorString  {
                 dispatch_async(dispatch_get_main_queue(), {
+                    self.hideSpinner()
+                    self.enableBoard()
                     self.errorTryCounter(errorMessage)
                 })
             } else {
                 dispatch_async(dispatch_get_main_queue(), {
+                    self.hideSpinner()
+                    self.enableBoard()
                     self.errorCounter = 0
                     if self.trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS {
                         if let _ = result?.game?.plays {
@@ -344,17 +365,22 @@ class GameViewController: UIViewController {
     // Check response
     //
     func chekResponse(gameChecked: CheckGame) {
+        print("CheckResponse")
+        print(gameChecked)
         let gameForCheck: Game = gameChecked.game!
         
         if ((gameChecked.playNumber != nil || gameChecked.playNumber > 0) &&
-            (gameForCheck.playerXOrO != nil && gameForCheck.playerXOrO != Constants.EMPTY_STRING && gameForCheck.playerXOrO != Settings.getSelection())) {
+            (gameForCheck.playerXOrO != nil &&
+                gameForCheck.playerXOrO != Constants.EMPTY_STRING &&
+                gameForCheck.playerXOrO != Settings.getSelection())) {
             // The check has to check for the other player play not the device player
             if (gameForCheck.playerXOrO != Settings.getSelection()) {
                 self.poolingForCheck.invalidate()
                 let lastPlace: Int = (gameForCheck.plays?.count)!
                 if lastPlace > 0 {
                     let lastPlay: Play = gameForCheck.plays![lastPlace - 1]
-                    if buttonTouched[lastPlay.position!] == true {
+                    if buttonTouched[lastPlay.position!] == Constants.X_IMAGE ||
+                        buttonTouched[lastPlay.position!] == Constants.O_IMAGE {
                         trysCounter += 1
                     } else {
                         setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
@@ -366,11 +392,6 @@ class GameViewController: UIViewController {
                 // Other player has won
                 Dialog().okDismissAlert(titleStr: Constants.LOSER_TITLE, messageStr: Constants.LOSER_TEXT, controller: self)
                 Settings.updateLoses()
-                disableBoard()
-            } else if (gameChecked.winner == true && gameForCheck.playerXOrO != Settings.getSelection()) {
-                // This player has won
-                Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
-                Settings.updateWins()
                 disableBoard()
             } else if (gameChecked.winner == false && gameForCheck.plays?.count == Constants.MAX_NUMBER_OF_PLAY) {
                 // Draw game
@@ -391,11 +412,5 @@ class GameViewController: UIViewController {
     }
     
     
-    //
-    // Check for winner, just in this device
-    //
-    func checkForWinner() {
-       
-    }
     
 }
