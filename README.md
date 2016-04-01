@@ -10,7 +10,7 @@ The other project that is the server part is [here](villacak/TicTacToeServer.git
 **How to play it:**
 From the first screen on the very first time you will see just the *Settings* button enabled, tap it. On the _Settings_ screen you will see one button disabled and two enabled that is the _Reset Score_ and the _Create New User_, if you want reset your score then it's taping on it that you will reset all three (Wins, Loses and Draws) to zero. Type your name or some identifier for you and then tap the _Create New User_ button, once you tap the button the app will create your user into the server in the cloud. Tab the back button once you have finished to go back to the main screen.
 Now on the main screen you will notice that all three buttons are enabled. To view your score type _Scores_ button, this will take you to the _Scores_ screen. Tap the back button to go back to the main screen. 
-For play you just need to tap on the _Play_ button. The app will look for a user for you and select if you will be X or O. You will receive a dialog telling you what has been assigned to you. At each time you play you will see a spinner and a message at the top right corner under the Navigation Bar.
+For play you just need to tap on the _Play_ button. The app will look for a user for you and select if you will be X or O. You will receive a dialog telling you what has been assigned to you. At each time you make a play you will see a spinner and a message at the top right corner under the Navigation Bar.
 
 
 **To Run and Build the app:**
