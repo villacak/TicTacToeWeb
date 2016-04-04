@@ -55,6 +55,8 @@ class GameViewController: UIViewController {
     
     var trysCounter: Int = 0
     
+    var reachability: Reachability!
+    
     //
     // Load settings when view did load
     //
@@ -62,12 +64,60 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         self.title = Constants.GAME_TITLE
+        self.disableBoard()
         hideSpinner()
         
         // clear all previous games form this user and check if exist a game to enroll or create a new
         clearGames(false)
+    }
+    
+    
+    //
+    // View will appear, set the notification center
+    //
+    override func viewWillAppear(animated: Bool) {
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+        } catch {
+            print("Unable to create Reachability")
+            return
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(GameViewController.reachabilityChanged(_:)),
+                                                         name: ReachabilityChangedNotification,
+                                                         object: reachability)
+        
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("This is not working.")
+            return
+        }
         
     }
+    
+    
+    
+    //
+    // Connection has changed
+    //
+    func reachabilityChanged(note: NSNotification) {
+        let reachability = note.object as! Reachability
+        if reachability.isReachable() {
+            if reachability.isReachableViaWiFi() {
+                print("Reachable via WiFi")
+            } else {
+                print("Reachable via Cellular")
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), {
+                self.disableBoard()
+            })
+            print("Not reachable")
+        }
+    }
+    
     
     //
     // Call clearGames when the user leave the view
@@ -98,7 +148,6 @@ class GameViewController: UIViewController {
             prepareForTheOtherUserPlay()
             checkIfThisUserWon()
         }
-        
     }
     
     
@@ -196,19 +245,19 @@ class GameViewController: UIViewController {
     func setPlay() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForPlayOrCheckGameService(game: "\(Settings.getGame())", selection: Settings.getSelection(), position: playerPosition, method: Constants.PUT_METHOD, service: Constants.GAME_PLAY_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                dispatch_async(dispatch_get_main_queue(), {
-                    self.errorTryCounter(errorMessage)
-                })
-            } else {
-                dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
+                if let errorMessage = errorString  {
+                    if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
+                        self.errorTryCounter(errorMessage)
+                    }
+                } else {
                     self.errorCounter = 0
                     if self.trysCounter == Constants.MAX_NUMBER_OF_POOLING_CALLS {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
                         self.dismissTheView()
                     }
-                })
-            }
+                }
+            })
         })
     }
     
@@ -219,14 +268,15 @@ class GameViewController: UIViewController {
     func poolingCheck() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForCheckGameService(game: "\(Settings.getGame())", method: Constants.GET_METHOD, service: Constants.GAME_CHECK_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
+                if let errorMessage = errorString  {
                     self.hideSpinner()
-                    self.enableBoard()
-                    self.errorTryCounter(errorMessage)
-                })
-            } else {
-                dispatch_async(dispatch_get_main_queue(), {
+                    if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
+                        self.enableBoard()
+                        self.errorTryCounter(errorMessage)
+                        self.dismissTheView()
+                    }
+                } else {
                     self.hideSpinner()
                     self.enableBoard()
                     self.errorCounter = 0
@@ -238,9 +288,9 @@ class GameViewController: UIViewController {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
                         self.dismissTheView()
                     }
-                })
-            }
-            self.hideSpinner()
+                }
+                self.hideSpinner()
+            })
         })
     }
     
@@ -254,7 +304,6 @@ class GameViewController: UIViewController {
         if self.errorCounter > Constants.MAX_FAIL_ATTEMPTS { // the service can fail for 3 times before we cancel
             self.poolingForCheck.invalidate()
             self.errorCounter = 0
-            self.dismissTheView()
         }
     }
     
@@ -265,16 +314,18 @@ class GameViewController: UIViewController {
     func clearGames(isJustClean: Bool) {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForFinalizeGameService(name: Settings.getUser(), method: Constants.GET_METHOD, service: Constants.GAME_FINALIZE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                self.dismissTheView()
-            } else {
-                dispatch_async(dispatch_get_main_queue(), {
+            dispatch_async(dispatch_get_main_queue(), {
+                if let errorMessage = errorString  {
+                    if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
+                        Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                        self.dismissTheView()
+                    }
+                } else {
                     if !isJustClean {
                         self.createOrGetGame()
                     }
-                })
-            }
+                }
+            })
         })
     }
     
@@ -285,20 +336,21 @@ class GameViewController: UIViewController {
     func createOrGetGame() {
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForCreateGameService(name: Settings.getUser(), method: Constants.PUT_METHOD, service: Constants.GAME_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
-            if let errorMessage = errorString  {
-                Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
-                self.dismissTheView()
-            } else {
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
+            dispatch_async(dispatch_get_main_queue(), {
+                if let errorMessage = errorString  {
+                    if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
+                        Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
+                        self.dismissTheView()
+                    }
+                } else {
+                    //                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     let game: Game = result!;
                     Settings.updateGame(game.game!)
                     Settings.updateSelection(game.playerXOrO!)
-                    dispatch_async(dispatch_get_main_queue(), {
-                        self.playerSelection = Settings.getSelection()
-                        self.actionsForWhoStartAndDontStart(Settings.getSelection())
-                    })
-                })
-            }
+                    self.playerSelection = Settings.getSelection()
+                    self.actionsForWhoStartAndDontStart(Settings.getSelection())
+                }
+            })
         })
     }
     
@@ -310,6 +362,7 @@ class GameViewController: UIViewController {
     func actionsForWhoStartAndDontStart(selection: String) {
         if selection == Constants.X {
             Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: Constants.START_PLAYING, controller: self)
+            self.enableBoard()
         } else {
             Dialog().okDismissAlert(titleStr: Constants.INFORMATION, messageStr: Constants.WAIT_FOR_USER_PLAY, controller: self)
             prepareForTheOtherUserPlay()
@@ -321,7 +374,7 @@ class GameViewController: UIViewController {
     // Give the right time to dismiss the view
     //
     func dismissTheView() {
-        let delay = 1.5 * Double(NSEC_PER_SEC)
+        let delay = 2.5 * Double(NSEC_PER_SEC)
         let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
         dispatch_after(time, dispatch_get_main_queue(), {
             self.navigationController?.popToRootViewControllerAnimated(true)
@@ -375,7 +428,7 @@ class GameViewController: UIViewController {
                 gameForCheck.playerXOrO != Settings.getSelection())) {
             // The check has to check for the other player play not the device player
             if (gameForCheck.playerXOrO != Settings.getSelection()) {
-                self.poolingForCheck.invalidate()
+                //                self.poolingForCheck.invalidate()
                 let lastPlace: Int = (gameForCheck.plays?.count)!
                 if lastPlace > 0 {
                     let lastPlay: Play = gameForCheck.plays![lastPlace - 1]
@@ -384,6 +437,7 @@ class GameViewController: UIViewController {
                         trysCounter += 1
                     } else {
                         setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
+                        self.poolingForCheck.invalidate()
                     }
                 }
             }
@@ -410,7 +464,4 @@ class GameViewController: UIViewController {
             }
         }
     }
-    
-    
-    
 }

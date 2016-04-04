@@ -14,26 +14,70 @@ class ViewController: UIViewController {
     @IBOutlet weak var scoresBtn: UIButton!
     @IBOutlet weak var settingsBtn: UIButton!
     
+    var reachability: Reachability!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     
+    //
+    // View will Appear
+    //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         initialChecks()   
     }
     
+    
+    //
+    // Run after view did appear
+    //
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        if Reachability.isConnectedToNetwork() == false {
-            Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
-            playBtn.enabled = false
-            settingsBtn.enabled = false
+        do {
+            reachability = try Reachability.reachabilityForInternetConnection()
+        } catch {
+            print("Unable to create Reachability")
+            return
         }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+                                                         selector: #selector(ViewController.reachabilityChanged(_:)),
+                                                         name: ReachabilityChangedNotification,
+                                                         object: reachability)
+                
+        do {
+            try reachability.startNotifier()
+        } catch {
+            print("This is not working.")
+            return
+        }
+        
 
     }
+    
+    //
+    // Connection has changed
+    //
+    func reachabilityChanged(note: NSNotification) {
+        let reachability = note.object as! Reachability
+        if reachability.isReachable() {
+            if reachability.isReachableViaWiFi() {
+                print("Reachable via WiFi")
+            } else {
+                print("Reachable via Cellular")
+            }
+        } else {
+            dispatch_async(dispatch_get_main_queue(), {
+                Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+                self.playBtn.enabled = false
+                self.settingsBtn.enabled = false
+            })
+            print("Not reachable")
+        }
+    }
+
     
     
     //

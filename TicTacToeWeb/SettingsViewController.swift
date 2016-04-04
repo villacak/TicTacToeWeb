@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SystemConfiguration
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
     
@@ -15,6 +16,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var resetUserBtn: UIButton!
     @IBOutlet weak var resetScoresBtn: UIButton!
     
+    var reachability: Reachability!
     
     //
     // Load data when view has been loaded
@@ -27,6 +29,53 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         userName.delegate = self
         initialSettings()
     }
+    
+    
+//    override func viewWillAppear(animated: Bool) {
+//        do {
+//            reachability = try Reachability.reachabilityForInternetConnection()
+//        } catch {
+//            print("Unable to create Reachability")
+//            return
+//        }
+//        
+//        NSNotificationCenter.defaultCenter().addObserver(self,
+//                                                         selector: #selector(SettingsViewController.reachabilityChanged(_:)),
+//                                                         name: ReachabilityChangedNotification,
+//                                                         object: reachability)
+//        
+//        do {
+//            try reachability.startNotifier()
+//        } catch {
+//            print("This is not working.")
+//            return
+//        }
+//        
+//    }
+
+    
+    //
+    // Connection has changed
+    //
+//    func reachabilityChanged(note: NSNotification) {
+//        let reachability = note.object as! Reachability
+//        if reachability.isReachable() {
+//            if reachability.isReachableViaWiFi() {
+//                print("Reachable via WiFi")
+//            } else {
+//                print("Reachable via Cellular")
+//            }
+//            initialSettings()
+//        } else {
+//            dispatch_async(dispatch_get_main_queue(), {
+//                Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+//            })
+//            userName.enabled = false
+//            newUserBtn.enabled = false
+//            print("Not reachable")
+//        }
+//    }
+    
     
     //
     // Initial settings for settings view
@@ -95,6 +144,19 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         Settings.resetDraws()
     }
     
+    //
+    // Give the right time to dismiss the view
+    //
+    func dismissTheViewDueNointernet() {
+        Dialog().okDismissAlert(titleStr: Constants.USER_ERROR, messageStr: Constants.USER_EMPTY, controller: self)
+        let delay = 1.5 * Double(NSEC_PER_SEC)
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+        dispatch_after(time, dispatch_get_main_queue(), {
+            self.navigationController?.popToRootViewControllerAnimated(true)
+        })
+    }
+    
+    
     
     //
     // Delegate to dismiss the keyboard
@@ -126,9 +188,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         jsonUtils.callRequestForUserServices(name: trimName, method: Constants.PUT_METHOD, service: Constants.USER_CREATE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 if let errorMessage = errorString  {
+                    
                     Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: errorMessage, controller: self)
                     self.userName.becomeFirstResponder()
+                    
                 } else {
+                    
                     if (trimName == result?.userName) {
                         Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.SUCESS_CREATED_USER, controller: self)
                         Settings.updateUser(trimName)
@@ -138,11 +203,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.SUCCESS_TITLE, messageStr: Constants.FAIL_CREATE_USER, controller: self)
                     }
+                    
                 }
                 self.initialSettings()
             })
         })
     }
-    
     
 }
