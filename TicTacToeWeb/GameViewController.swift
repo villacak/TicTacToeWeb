@@ -282,13 +282,9 @@ class GameViewController: UIViewController {
                 if let errorMessage = errorString  {
                     self.hideSpinner()
                     if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
-                        self.enableBoard()
                         self.errorTryCounter(errorMessage)
-                        self.dismissTheView()
                     }
                 } else {
-                    self.hideSpinner()
-                    self.enableBoard()
                     self.errorCounter = 0
                     if self.trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS {
                         if let _ = result?.game?.plays {
@@ -314,6 +310,7 @@ class GameViewController: UIViewController {
         if self.errorCounter > Constants.MAX_FAIL_ATTEMPTS { // the service can fail for 3 times before we cancel
             self.poolingForCheck.invalidate()
             self.errorCounter = 0
+            self.dismissTheView()
         }
     }
     
@@ -353,7 +350,6 @@ class GameViewController: UIViewController {
                         self.dismissTheView()
                     }
                 } else {
-                    //                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), {
                     let game: Game = result!;
                     Settings.updateGame(game.game!)
                     Settings.updateSelection(game.playerXOrO!)
@@ -438,7 +434,6 @@ class GameViewController: UIViewController {
                 gameForCheck.playerXOrO != Settings.getSelection())) {
             // The check has to check for the other player play not the device player
             if (gameForCheck.playerXOrO != Settings.getSelection()) {
-                //                self.poolingForCheck.invalidate()
                 let lastPlace: Int = (gameForCheck.plays?.count)!
                 if lastPlace > 0 {
                     let lastPlay: Play = gameForCheck.plays![lastPlace - 1]
@@ -447,6 +442,8 @@ class GameViewController: UIViewController {
                         trysCounter += 1
                     } else {
                         setImageForSpot(lastPlay.position!, played: false, selection: gameForCheck.playerXOrO!)
+                        self.hideSpinner()
+                        self.enableBoard()
                         self.poolingForCheck.invalidate()
                     }
                 }

@@ -70,7 +70,10 @@ class ViewController: UIViewController {
             }
         } else {
             dispatch_async(dispatch_get_main_queue(), {
-                Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+                if Settings.getShownDialog() == false {
+                    Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+                    Settings.updateShownDialog(true)
+                }
                 self.playBtn.enabled = false
                 self.settingsBtn.enabled = false
             })

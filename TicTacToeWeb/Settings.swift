@@ -189,5 +189,20 @@ class Settings: NSObject {
         }
         return idUser
     }
-
+    
+    
+    //
+    // Internet Dialog has Shown get and set
+    //
+    static func updateShownDialog(shownDialog: Bool) {
+        defaults.setObject(shownDialog, forKey: Constants.SHOWN_DIALOG)
+    }
+    
+    static func getShownDialog() -> Bool {
+        var shownDialog: Bool = false
+        if let tempShownDialog: Bool = defaults.boolForKey(Constants.SHOWN_DIALOG) {
+            shownDialog = tempShownDialog
+        }
+        return shownDialog
+    }
 }

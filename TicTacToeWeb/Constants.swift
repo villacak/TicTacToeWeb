@@ -94,6 +94,7 @@ class Constants: NSObject {
     static let WINS: String = "wins"
     static let LOSES: String = "loses"
     static let DRAWS: String = "draws"
+    static let SHOWN_DIALOG: String = "shownDialog"
     
     // Function name for pooling
     static let CHECK_OTHER_PLAYER: String = "poolingCheck"
