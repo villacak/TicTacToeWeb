@@ -26,6 +26,7 @@ class ViewController: UIViewController {
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        Settings.updateShownDialog(false)
         initialChecks()   
     }
     
