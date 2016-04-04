@@ -31,52 +31,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-//    override func viewWillAppear(animated: Bool) {
-//        do {
-//            reachability = try Reachability.reachabilityForInternetConnection()
-//        } catch {
-//            print("Unable to create Reachability")
-//            return
-//        }
-//        
-//        NSNotificationCenter.defaultCenter().addObserver(self,
-//                                                         selector: #selector(SettingsViewController.reachabilityChanged(_:)),
-//                                                         name: ReachabilityChangedNotification,
-//                                                         object: reachability)
-//        
-//        do {
-//            try reachability.startNotifier()
-//        } catch {
-//            print("This is not working.")
-//            return
-//        }
-//        
-//    }
-
-    
-    //
-    // Connection has changed
-    //
-//    func reachabilityChanged(note: NSNotification) {
-//        let reachability = note.object as! Reachability
-//        if reachability.isReachable() {
-//            if reachability.isReachableViaWiFi() {
-//                print("Reachable via WiFi")
-//            } else {
-//                print("Reachable via Cellular")
-//            }
-//            initialSettings()
-//        } else {
-//            dispatch_async(dispatch_get_main_queue(), {
-//                Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
-//            })
-//            userName.enabled = false
-//            newUserBtn.enabled = false
-//            print("Not reachable")
-//        }
-//    }
-    
-    
     //
     // Initial settings for settings view
     //

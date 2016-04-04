@@ -56,6 +56,7 @@ class GameViewController: UIViewController {
     var trysCounter: Int = 0
     
     var reachability: Reachability!
+    let ReachabilityChangedNotificationGame: String = "ReachabilityChangedNotificationGame"
     
     //
     // Load settings when view did load
@@ -85,7 +86,7 @@ class GameViewController: UIViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(GameViewController.reachabilityChanged(_:)),
-                                                         name: ReachabilityChangedNotification,
+                                                         name: ReachabilityChangedNotificationGame,
                                                          object: reachability)
         
         do {
@@ -95,6 +96,14 @@ class GameViewController: UIViewController {
             return
         }
         
+    }
+    
+    
+    //
+    // View will disppear
+    //
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotificationGame, object: reachability)
     }
     
     
@@ -113,6 +122,7 @@ class GameViewController: UIViewController {
         } else {
             dispatch_async(dispatch_get_main_queue(), {
                 self.disableBoard()
+                self.dismissTheView()
             })
             print("Not reachable")
         }
