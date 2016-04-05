@@ -128,7 +128,7 @@ class Constants: NSObject {
     static let OFFLINE: String = "offline"
     
     static let POOLING_TIME: NSTimeInterval = 5.0
-    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 18 // trying for 10 times will give 150 seconds, that's 1:30 minutes
+    static let MAX_NUMBER_OF_POOLING_CALLS: Int = 18 // trying for 10 times will give 150 seconds, that's around 1:30 minutes
     static let MAX_NUMBER_OF_PLAY: Int = 9
     static let MINIMUM_PLAYS_FOR_CHECK: Int = 5
     static let MAX_FAIL_ATTEMPTS: Int = 3

@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var networkStatus : Reachability.NetworkStatus!
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
+        Settings.updateShownDialog(false)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.checkNetworkStatus), name: ReachabilityChangedNotification, object: nil);
         
         do{

@@ -56,7 +56,6 @@ class GameViewController: UIViewController {
     var trysCounter: Int = 0
     
     var reachability: Reachability!
-    let ReachabilityChangedNotificationGame: String = "ReachabilityChangedNotificationGame"
     
     //
     // Load settings when view did load
@@ -85,8 +84,8 @@ class GameViewController: UIViewController {
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self,
-                                                         selector: #selector(GameViewController.reachabilityChanged(_:)),
-                                                         name: ReachabilityChangedNotificationGame,
+                                                         selector: #selector(GameViewController.reachabilityChangedGame(_:)),
+                                                         name: ReachabilityChangedNotification,
                                                          object: reachability)
         
         do {
@@ -95,7 +94,6 @@ class GameViewController: UIViewController {
             print("This is not working.")
             return
         }
-        
     }
     
     
@@ -103,7 +101,7 @@ class GameViewController: UIViewController {
     // View will disppear
     //
     override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotificationGame, object: reachability)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
     }
     
     
@@ -111,7 +109,7 @@ class GameViewController: UIViewController {
     //
     // Connection has changed
     //
-    func reachabilityChanged(note: NSNotification) {
+    func reachabilityChangedGame(note: NSNotification) {
         let reachability = note.object as! Reachability
         if reachability.isReachable() {
             if reachability.isReachableViaWiFi() {
@@ -121,7 +119,12 @@ class GameViewController: UIViewController {
             }
         } else {
             dispatch_async(dispatch_get_main_queue(), {
+                if Settings.getShownDialog() == false {
+                    Dialog().okDismissAlert(titleStr: Constants.INTERNET_TITLE, messageStr: Constants.NO_INTERNET_CONN, controller: self)
+                    Settings.updateShownDialog(true)
+                }
                 self.disableBoard()
+                self.hideSpinner()
                 self.dismissTheView()
             })
             print("Not reachable")
@@ -280,7 +283,6 @@ class GameViewController: UIViewController {
         jsonUtils.callRequestForCheckGameService(game: "\(Settings.getGame())", method: Constants.GET_METHOD, service: Constants.GAME_CHECK_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             dispatch_async(dispatch_get_main_queue(), {
                 if let errorMessage = errorString  {
-                    self.hideSpinner()
                     if (errorMessage.rangeOfString(Constants.OFFLINE) == nil) {
                         self.errorTryCounter(errorMessage)
                     }
@@ -292,10 +294,10 @@ class GameViewController: UIViewController {
                         }
                     } else {
                         Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: Constants.MAX_TRY_REACHED, controller: self)
+                        self.poolingForCheck.invalidate()
                         self.dismissTheView()
                     }
                 }
-                self.hideSpinner()
             })
         })
     }

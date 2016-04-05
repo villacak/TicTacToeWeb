@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var settingsBtn: UIButton!
     
     var reachability: Reachability!
+    let ReachabilityChangedNotificationStart: String = "ReachabilityChangedNotificationStart"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,7 +27,6 @@ class ViewController: UIViewController {
     //
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        Settings.updateShownDialog(false)
         initialChecks()   
     }
     
@@ -54,9 +54,15 @@ class ViewController: UIViewController {
             print("This is not working.")
             return
         }
-        
-
     }
+    
+    //
+    // View will disppear
+    //
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
+    }
+    
     
     //
     // Connection has changed
@@ -69,6 +75,9 @@ class ViewController: UIViewController {
             } else {
                 print("Reachable via Cellular")
             }
+            self.playBtn.enabled = true
+            self.settingsBtn.enabled = true
+            Settings.updateShownDialog(false)
         } else {
             dispatch_async(dispatch_get_main_queue(), {
                 if Settings.getShownDialog() == false {
