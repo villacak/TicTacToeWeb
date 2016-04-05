@@ -13,7 +13,6 @@ class Constants: NSObject {
 
     // Base URL
     static let URL_BASE: String = ""
-//    static let URL_BASE: String = "http://localhost:8080/server/rest"
     
     
     // Endpoints
