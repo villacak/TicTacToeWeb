@@ -29,7 +29,7 @@ class Scores: NSManagedObject {
     
     init(valueWin: Int, valueLose: Int, valueDraw: Int, context: NSManagedObjectContext) {
         let entity =  NSEntityDescription.entityForName(Keys.ScoresClass, inManagedObjectContext: context)!
-        super.init(entity: entity,insertIntoManagedObjectContext: context)
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
         
         wins = valueWin
         loses = valueLose

@@ -18,12 +18,6 @@ class StatsViewController: UIViewController, NSFetchedResultsControllerDelegate 
     @IBOutlet weak var draws: UILabel!
     @IBOutlet weak var lastPlayedDate: UILabel!
     
-    // Get the file path
-    var filePath : String {
-        let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        return url.URLByAppendingPathComponent("mapRegionArchive").path!
-    }
     
     // Create the shared context
     var sharedContext: NSManagedObjectContext {
@@ -43,15 +37,16 @@ class StatsViewController: UIViewController, NSFetchedResultsControllerDelegate 
             fetchRequest.returnsObjectsAsFaults = false
             let tempScores: [Scores] = try sharedContext.executeFetchRequest(fetchRequest) as! [Scores]
             if (tempScores.count > 0) {
-                let result: Scores = tempScores[0]
+                let result: Scores = tempScores[0] as Scores
                 draws.text = "\(result.draws)"
                 loses.text = "\(result.loses)"
                 wins.text = "\(result.wins)"
-                CoreDataStackManager.sharedInstance().saveContext()
             } else {
                 draws.text = "0"
                 loses.text = "0"
                 wins.text = "0"
+                let _: Scores = Scores(valueWin: 0, valueLose: 0, valueDraw: 0, context: sharedContext)
+                CoreDataStackManager.sharedInstance().saveContext()
             }
         } catch let error as NSError {
             Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: error.localizedDescription, controller: self)
@@ -64,8 +59,4 @@ class StatsViewController: UIViewController, NSFetchedResultsControllerDelegate 
         userName.text = Settings.getUser()
         lastPlayedDate.text = Settings.getLastDatePlayed()
     }
-
-    
-    
-    
 }

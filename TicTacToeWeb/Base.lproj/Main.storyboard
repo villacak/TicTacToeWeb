@@ -482,7 +482,7 @@
                                     <action selector="resetScoresAction:" destination="fsI-pu-FQU" eventType="touchUpInside" id="5Gt-CR-xGe"/>
                                 </connections>
                             </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tL2-rl-azS">
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tL2-rl-azS">
                                 <rect key="frame" x="290" y="290" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
@@ -490,6 +490,7 @@
                         <constraints>
                             <constraint firstItem="yZd-Nk-cIj" firstAttribute="leading" secondItem="RTp-XL-nrV" secondAttribute="leading" id="2YM-gd-D5b"/>
                             <constraint firstItem="7ur-jI-vib" firstAttribute="leading" secondItem="OAP-w5-M5K" secondAttribute="leading" id="5XN-zZ-Iim"/>
+                            <constraint firstItem="tL2-rl-azS" firstAttribute="centerX" secondItem="2Di-da-tSU" secondAttribute="centerX" id="Lm7-xe-zF4"/>
                             <constraint firstItem="7ur-jI-vib" firstAttribute="top" secondItem="OAP-w5-M5K" secondAttribute="bottom" constant="8" symbolic="YES" id="Meq-Ko-Vln"/>
                             <constraint firstItem="yZd-Nk-cIj" firstAttribute="leading" secondItem="2Di-da-tSU" secondAttribute="leadingMargin" id="NZ2-zh-0qw"/>
                             <constraint firstItem="RTp-XL-nrV" firstAttribute="top" secondItem="10T-4b-bvG" secondAttribute="bottom" constant="59" id="OVd-fx-Jti"/>
@@ -502,6 +503,7 @@
                             <constraint firstItem="OAP-w5-M5K" firstAttribute="top" secondItem="yZd-Nk-cIj" secondAttribute="bottom" constant="8" symbolic="YES" id="oid-CU-5ep"/>
                             <constraint firstItem="jPZ-ac-YJr" firstAttribute="top" secondItem="7ur-jI-vib" secondAttribute="bottom" constant="8" symbolic="YES" id="uON-Uk-Vy7"/>
                             <constraint firstItem="7ur-jI-vib" firstAttribute="leading" secondItem="jPZ-ac-YJr" secondAttribute="leading" id="wwB-r2-5Jn"/>
+                            <constraint firstItem="tL2-rl-azS" firstAttribute="centerY" secondItem="2Di-da-tSU" secondAttribute="centerY" id="xrr-eQ-Hav"/>
                         </constraints>
                     </view>
                     <connections>

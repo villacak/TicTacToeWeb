@@ -75,8 +75,7 @@ class ViewController: UIViewController {
             } else {
                 print("Reachable via Cellular")
             }
-            self.playBtn.enabled = true
-            self.settingsBtn.enabled = true
+            initialChecks() 
             Settings.updateShownDialog(false)
         } else {
             dispatch_async(dispatch_get_main_queue(), {

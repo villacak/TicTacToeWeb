@@ -65,12 +65,6 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
     let reusableId: String = "ScoresInfo"
     var editingScores: Bool = false
     
-    // Get the file path
-    var filePath : String {
-        let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
-        return url.URLByAppendingPathComponent("mapRegionArchive").path!
-    }
     
     // Create the shared context
     var sharedContext: NSManagedObjectContext {
@@ -89,6 +83,7 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
         
         // clear all previous games form this user and check if exist a game to enroll or create a new
         clearGames(false)
+        poulateValues()
     }
     
     
@@ -216,7 +211,7 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
             setImageForSpot(sender.tag, played: lastPlayed, selection: playerSelection)
             setPlay()
             prepareForTheOtherUserPlay()
-            checkIfThisUserWon()
+            checkIfThisUserWon(Settings.getSelection())
         }
     }
     
@@ -260,26 +255,6 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
         default:
             pos5.setImage(image, forState: UIControlState.Normal)
             
-        }
-    }
-    
-    
-    //
-    // Check if the device user has won
-    //
-    func checkIfThisUserWon() {
-        let playerSelection: String = (Settings.getSelection() == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
-        if (buttonTouched[1] == playerSelection && buttonTouched[2] == playerSelection && buttonTouched[3] == playerSelection ||
-            buttonTouched[4] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[6] == playerSelection ||
-            buttonTouched[7] == playerSelection && buttonTouched[8] == playerSelection && buttonTouched[9] == playerSelection ||
-            buttonTouched[1] == playerSelection && buttonTouched[4] == playerSelection && buttonTouched[7] == playerSelection ||
-            buttonTouched[2] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[8] == playerSelection ||
-            buttonTouched[3] == playerSelection && buttonTouched[6] == playerSelection && buttonTouched[9] == playerSelection ||
-            buttonTouched[1] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[9] == playerSelection ||
-            buttonTouched[3] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[7] == playerSelection) {
-            Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
-            winsVar! = winsVar! + 1
-            disableBoard()
         }
     }
     
@@ -378,6 +353,7 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
     // Clear all games from the actual user
     //
     func clearGames(isJustClean: Bool) {
+        spinner.startAnimating()
         let jsonUtils: JSONUtils = JSONUtils()
         jsonUtils.callRequestForFinalizeGameService(name: Settings.getUser(), method: Constants.GET_METHOD, service: Constants.GAME_FINALIZE_SERVICE, controller: self, completionHandler: { (result, errorString) -> Void in
             dispatch_async(dispatch_get_main_queue(), {
@@ -409,6 +385,7 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
                         self.dismissTheView()
                     }
                 } else {
+                    self.spinner.stopAnimating()
                     let game: Game = result!;
                     Settings.updateGame(game.game!)
                     Settings.updateSelection(game.playerXOrO!)
@@ -480,11 +457,36 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
     
     
     //
+    // Check if the device user has won
+    //
+    func checkIfThisUserWon(roundSelection: String) {
+        let playerSelection: String = (roundSelection == Constants.X) ? Constants.X_IMAGE : Constants.O_IMAGE
+        if (buttonTouched[1] == playerSelection && buttonTouched[2] == playerSelection && buttonTouched[3] == playerSelection ||
+            buttonTouched[4] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[6] == playerSelection ||
+            buttonTouched[7] == playerSelection && buttonTouched[8] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[1] == playerSelection && buttonTouched[4] == playerSelection && buttonTouched[7] == playerSelection ||
+            buttonTouched[2] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[8] == playerSelection ||
+            buttonTouched[3] == playerSelection && buttonTouched[6] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[1] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[9] == playerSelection ||
+            buttonTouched[3] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[7] == playerSelection) {
+            
+            if roundSelection == Settings.getSelection() {
+                Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
+                winsVar = winsVar + 1
+            } else if roundSelection != Settings.getSelection() {
+                Dialog().okDismissAlert(titleStr: Constants.LOSER_TITLE, messageStr: Constants.LOSER_TEXT, controller: self)
+                losesVar = losesVar + 1
+            }
+            disableBoard()
+            hideSpinner()
+        }
+    }
+    
+    
+    //
     // Check response
     //
     func chekResponse(gameChecked: CheckGame) {
-        print("CheckResponse")
-        print(gameChecked)
         let gameForCheck: Game = gameChecked.game!
         
         if ((gameChecked.playNumber != nil || gameChecked.playNumber > 0) &&
@@ -504,20 +506,17 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
                         self.hideSpinner()
                         self.enableBoard()
                         self.poolingForCheck.invalidate()
+                        checkIfThisUserWon(gameForCheck.playerXOrO!)
                     }
                 }
             }
             
-            if (gameChecked.winner == true && gameForCheck.playerXOrO != Settings.getSelection()) {
-                // Other player has won
-                Dialog().okDismissAlert(titleStr: Constants.LOSER_TITLE, messageStr: Constants.LOSER_TEXT, controller: self)
-                losesVar! = losesVar! + 1
-                disableBoard()
-            } else if (gameChecked.winner == false && gameForCheck.plays?.count == Constants.MAX_NUMBER_OF_PLAY) {
+            if (gameChecked.winner == false && gameForCheck.plays?.count == Constants.MAX_NUMBER_OF_PLAY) {
                 // Draw game
-                Dialog().okDismissAlert(titleStr: Constants.DRAW_TITLE, messageStr: Constants.DRAW_TEXT, controller: self)
-                drawsVar! = drawsVar! + 1
+                drawsVar = drawsVar + 1
                 disableBoard()
+                hideSpinner()
+                Dialog().okDismissAlert(titleStr: Constants.DRAW_TITLE, messageStr: Constants.DRAW_TEXT, controller: self)
             }
         } else {
             if (trysCounter <= Constants.MAX_NUMBER_OF_POOLING_CALLS) {
