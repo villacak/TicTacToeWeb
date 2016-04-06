@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		334305D61CB0822300602B73 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334305D51CB0822300602B73 /* Reachability.swift */; };
+		334305D81CB49BAF00602B73 /* Scores.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334305D71CB49BAF00602B73 /* Scores.swift */; };
+		334305DA1CB4A0F600602B73 /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334305D91CB4A0F600602B73 /* CoreDataStackManager.swift */; };
 		335E62AF1CAB71B60027D94A /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 335E62AE1CAB71B60027D94A /* .gitignore */; };
 		33671EA61C7AB17900DE8CE0 /* o_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 33671EA51C7AB17900DE8CE0 /* o_image.png */; };
 		33671EA81C7AB18400DE8CE0 /* x_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 33671EA71C7AB18400DE8CE0 /* x_image.png */; };
@@ -37,6 +39,8 @@
 /* Begin PBXFileReference section */
 		334305D41CB07E4900602B73 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		334305D51CB0822300602B73 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		334305D71CB49BAF00602B73 /* Scores.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scores.swift; sourceTree = "<group>"; };
+		334305D91CB4A0F600602B73 /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		335E62AE1CAB71B60027D94A /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		33671EA51C7AB17900DE8CE0 /* o_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = o_image.png; sourceTree = "<group>"; };
 		33671EA71C7AB18400DE8CE0 /* x_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = x_image.png; sourceTree = "<group>"; };
@@ -140,6 +144,7 @@
 				33B14F321C6FED8E009C69B7 /* User.swift */,
 				33B14F341C6FEE4B009C69B7 /* Play.swift */,
 				33ACE85C1CA07098005A8E88 /* CheckGame.swift */,
+				334305D71CB49BAF00602B73 /* Scores.swift */,
 			);
 			name = domain;
 			sourceTree = "<group>";
@@ -154,6 +159,7 @@
 				3374BBAB1C8517E300BD9F8D /* Dialog.swift */,
 				334305D41CB07E4900602B73 /* Reachability.h */,
 				334305D51CB0822300602B73 /* Reachability.swift */,
+				334305D91CB4A0F600602B73 /* CoreDataStackManager.swift */,
 			);
 			name = utils;
 			sourceTree = "<group>";
@@ -244,8 +250,10 @@
 				33B14F3A1C6FFC77009C69B7 /* Requests.swift in Sources */,
 				3374BBA81C83DB4500BD9F8D /* Settings.swift in Sources */,
 				3374BBAC1C8517E300BD9F8D /* Dialog.swift in Sources */,
+				334305D81CB49BAF00602B73 /* Scores.swift in Sources */,
 				33B14F3D1C700152009C69B7 /* UrlHelper.swift in Sources */,
 				33C4C9CE1C70BD43001F889E /* JSONUtils.swift in Sources */,
+				334305DA1CB4A0F600602B73 /* CoreDataStackManager.swift in Sources */,
 				33B14F311C6FECAB009C69B7 /* Game.swift in Sources */,
 				3374BBAA1C83F3CE00BD9F8D /* SettingsViewController.swift in Sources */,
 				3374BBA61C7E883A00BD9F8D /* GameViewController.swift in Sources */,

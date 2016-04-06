@@ -24,13 +24,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Settings.updateShownDialog(false)
         NSNotificationCenter.defaultCenter().addObserver(self, selector:#selector(AppDelegate.checkNetworkStatus), name: ReachabilityChangedNotification, object: nil);
         
-        do{
+        do {
             self.reachability = try Reachability.reachabilityForInternetConnection()
-        }catch{}
+        } catch {}
         
-        do{
+        do {
             try self.reachability.startNotifier()
-        }catch{}
+        } catch {}
         
         self.checkNetworkStatus()
         
@@ -108,8 +108,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return managedObjectContext
     }()
     
-    // MARK: - Core Data Saving support
     
+    //
+    // MARK: - Core Data Saving support
+    //
     func saveContext () {
         if managedObjectContext.hasChanges {
             do {

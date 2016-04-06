@@ -15,6 +15,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var newUserBtn: UIButton!
     @IBOutlet weak var resetUserBtn: UIButton!
     @IBOutlet weak var resetScoresBtn: UIButton!
+    @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var reachability: Reachability!
     
@@ -24,6 +25,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        spinner.stopAnimating()
         self.title = Constants.SETTINGS_TITLE
         
         userName.delegate = self
@@ -118,6 +120,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
         if let tempUserName = userName.text where ((userName.text?.isEmpty) != nil) {
             if (tempUserName != Constants.EMPTY_STRING) {
+                spinner.startAnimating()
                 callUpdateUser(tempUserName as String)
             } else {
                 Dialog().okDismissAlert(titleStr: Constants.USER_ERROR, messageStr: Constants.USER_EMPTY, controller: self)
@@ -220,6 +223,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                     
                 }
                 self.initialSettings()
+                self.spinner.stopAnimating()
             })
         })
     }

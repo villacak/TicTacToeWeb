@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreData
 
-class GameViewController: UIViewController {
+class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var pos1: UIButton!
     @IBOutlet weak var pos2: UIButton!
@@ -57,6 +58,25 @@ class GameViewController: UIViewController {
     
     var reachability: Reachability!
     
+    var winsVar: Int = 0
+    var losesVar: Int = 0
+    var drawsVar: Int = 0
+    
+    let reusableId: String = "ScoresInfo"
+    var editingScores: Bool = false
+    
+    // Get the file path
+    var filePath : String {
+        let manager = NSFileManager.defaultManager()
+        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first! as NSURL
+        return url.URLByAppendingPathComponent("mapRegionArchive").path!
+    }
+    
+    // Create the shared context
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }
+    
     //
     // Load settings when view did load
     //
@@ -70,6 +90,28 @@ class GameViewController: UIViewController {
         // clear all previous games form this user and check if exist a game to enroll or create a new
         clearGames(false)
     }
+    
+    
+    //
+    // Populate the Pin array from the DB
+    //
+    func poulateValues() {
+        do {
+            let fetchRequest = NSFetchRequest(entityName: Scores.Keys.ScoresClass)
+            fetchRequest.returnsObjectsAsFaults = false
+            let tempScores: [Scores] = try sharedContext.executeFetchRequest(fetchRequest) as! [Scores]
+            if (tempScores.count > 0) {
+                let result: Scores = tempScores[0]
+                winsVar = result.wins as Int
+                losesVar = result.loses as Int
+                drawsVar = result.draws as Int
+            }
+        } catch let error as NSError {
+            Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: error.localizedDescription, controller: self)
+            print("Error : \(error.localizedDescription)")
+        }
+    }
+    
     
     
     //
@@ -102,6 +144,21 @@ class GameViewController: UIViewController {
     //
     override func viewWillDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
+        do {
+            let fetchRequest = NSFetchRequest(entityName: Scores.Keys.ScoresClass)
+            fetchRequest.returnsObjectsAsFaults = false
+            let tempScores: [Scores] = try sharedContext.executeFetchRequest(fetchRequest) as! [Scores]
+            if (tempScores.count > 0) {
+                let result: Scores = tempScores[0]
+                result.draws = drawsVar
+                result.loses = losesVar
+                result.wins = winsVar
+                CoreDataStackManager.sharedInstance().saveContext()
+            }
+        } catch let error as NSError {
+            Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: error.localizedDescription, controller: self)
+            print("Error : \(error.localizedDescription)")
+        }
     }
     
     
@@ -221,7 +278,7 @@ class GameViewController: UIViewController {
             buttonTouched[1] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[9] == playerSelection ||
             buttonTouched[3] == playerSelection && buttonTouched[5] == playerSelection && buttonTouched[7] == playerSelection) {
             Dialog().okDismissAlert(titleStr: Constants.WINNER_TITLE, messageStr: Constants.WINNER_TEXT, controller: self)
-            Settings.updateWins()
+            winsVar! = winsVar! + 1
             disableBoard()
         }
     }
@@ -454,12 +511,12 @@ class GameViewController: UIViewController {
             if (gameChecked.winner == true && gameForCheck.playerXOrO != Settings.getSelection()) {
                 // Other player has won
                 Dialog().okDismissAlert(titleStr: Constants.LOSER_TITLE, messageStr: Constants.LOSER_TEXT, controller: self)
-                Settings.updateLoses()
+                losesVar! = losesVar! + 1
                 disableBoard()
             } else if (gameChecked.winner == false && gameForCheck.plays?.count == Constants.MAX_NUMBER_OF_PLAY) {
                 // Draw game
                 Dialog().okDismissAlert(titleStr: Constants.DRAW_TITLE, messageStr: Constants.DRAW_TEXT, controller: self)
-                Settings.updateDraws()
+                drawsVar! = drawsVar! + 1
                 disableBoard()
             }
         } else {

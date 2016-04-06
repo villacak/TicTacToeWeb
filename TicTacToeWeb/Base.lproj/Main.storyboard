@@ -482,6 +482,9 @@
                                     <action selector="resetScoresAction:" destination="fsI-pu-FQU" eventType="touchUpInside" id="5Gt-CR-xGe"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="tL2-rl-azS">
+                                <rect key="frame" x="290" y="290" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -505,6 +508,7 @@
                         <outlet property="newUserBtn" destination="OAP-w5-M5K" id="eh6-jw-9Ze"/>
                         <outlet property="resetScoresBtn" destination="jPZ-ac-YJr" id="Spr-MJ-ZjV"/>
                         <outlet property="resetUserBtn" destination="7ur-jI-vib" id="9xt-Zh-1Ql"/>
+                        <outlet property="spinner" destination="tL2-rl-azS" id="ogn-mY-lni"/>
                         <outlet property="userName" destination="yZd-Nk-cIj" id="yau-MJ-RLg"/>
                     </connections>
                 </viewController>
