@@ -388,6 +388,8 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
                     }
                 } else {
                     self.spinner.stopAnimating()
+                    self.spinnerText.text = Constants.WAITING_FOR_PLAYER
+                    self.spinnerText.hidden = true
                     let game: Game = result!;
                     Settings.updateGame(game.game!)
                     Settings.updateSelection(game.playerXOrO!)
