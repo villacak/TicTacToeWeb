@@ -106,7 +106,9 @@ class ViewController: UIViewController {
         } else {
             playBtn.enabled = false
             scoresBtn.enabled = false
+            
         }
+        settingsBtn.enabled = true
     }
 }
 

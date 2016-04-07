@@ -125,6 +125,7 @@ class Constants: NSObject {
     static let INTERNET_TITLE: String = "Internet"
     static let NO_INTERNET_CONN: String = "You don't have internet connection, you can't play, try check your WI-FI and/or your mobile has internet signal"
     static let OFFLINE: String = "offline"
+    static let SEARCHING_FOR_PLAYERS: String = "Searching for other player"
     
     static let POOLING_TIME: NSTimeInterval = 5.0
     static let MAX_NUMBER_OF_POOLING_CALLS: Int = 18 // trying for 10 times will give 150 seconds, that's around 1:30/1:40 minutes

@@ -79,7 +79,9 @@ class GameViewController: UIViewController, NSFetchedResultsControllerDelegate {
         
         self.title = Constants.GAME_TITLE
         self.disableBoard()
-        hideSpinner()
+//        hideSpinner()
+        spinner.startAnimating()
+        spinnerText.text = Constants.SEARCHING_FOR_PLAYERS
         
         // clear all previous games form this user and check if exist a game to enroll or create a new
         clearGames(false)

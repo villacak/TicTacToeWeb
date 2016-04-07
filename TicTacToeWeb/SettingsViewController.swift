@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 import SystemConfiguration
 
 class SettingsViewController: UIViewController, UITextFieldDelegate {
@@ -18,6 +19,12 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     var reachability: Reachability!
+    
+    // Create the shared context
+    var sharedContext: NSManagedObjectContext {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }
+
     
     //
     // Load data when view has been loaded
@@ -77,6 +84,7 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
                 print("Reachable via Cellular")
             }
             self.userName.enabled = true
+            self.newUserBtn.enabled = true
             Settings.updateShownDialog(false)
         } else {
             dispatch_async(dispatch_get_main_queue(), {
@@ -91,6 +99,28 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    
+    //
+    // Reset Scores
+    //
+    func resetScores() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: ReachabilityChangedNotification, object: reachability)
+        do {
+            let fetchRequest = NSFetchRequest(entityName: Scores.Keys.ScoresClass)
+            fetchRequest.returnsObjectsAsFaults = false
+            let tempScores: [Scores] = try sharedContext.executeFetchRequest(fetchRequest) as! [Scores]
+            if (tempScores.count > 0) {
+                let result: Scores = tempScores[0]
+                result.draws = 0
+                result.loses = 0
+                result.wins = 0
+                CoreDataStackManager.sharedInstance().saveContext()
+            }
+        } catch let error as NSError {
+            Dialog().okDismissAlert(titleStr: Constants.ERROR_TITLE, messageStr: error.localizedDescription, controller: self)
+            print("Error : \(error.localizedDescription)")
+        }
+    }
     
     
     //
@@ -151,15 +181,6 @@ class SettingsViewController: UIViewController, UITextFieldDelegate {
         initialSettings()
     }
     
-    
-    //
-    // Reset Scores
-    //
-    func resetScores() {
-        Settings.resetWins()
-        Settings.resetLoses()
-        Settings.resetDraws()
-    }
     
     //
     // Give the right time to dismiss the view
